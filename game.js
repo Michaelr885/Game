@@ -17,7 +17,7 @@ const SQRT3 = Math.sqrt(3);
 const mapImg = new Image();
 const heroImg = new Image();
 mapImg.src = "assets/karte.png";
-heroImg.src = "assets/ritter.png";
+heroImg.src = "assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.png";
 
 const DIRS = [
   { q: 1, r: 0, keys: ["ArrowRight", "d", "D"] },
