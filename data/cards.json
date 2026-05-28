@@ -1,0 +1,68 @@
+[
+  {
+    "id": "FAERUN_MELEE_03",
+    "name": "Stahlschlag",
+    "type": "attack",
+    "subtype": "melee",
+    "value": 3,
+    "text": "Nah-Angriff: 3 Schaden am Boss."
+  },
+  {
+    "id": "FAERUN_RANGED_04",
+    "name": "Pfeilhagel",
+    "type": "attack",
+    "subtype": "ranged",
+    "value": 4,
+    "text": "Fern-Angriff: 4 Schaden am Boss."
+  },
+  {
+    "id": "FAERUN_MAGIC_04",
+    "name": "Sonnenfeuer",
+    "type": "attack",
+    "subtype": "magic",
+    "value": 4,
+    "text": "Magie-Angriff: 4 Schaden am Boss."
+  },
+  {
+    "id": "FAERUN_SHIELD_04",
+    "name": "Schild des Lichts",
+    "type": "protection",
+    "value": 4,
+    "text": "Schutz: Geplanter Boss-Angriff −4."
+  },
+  {
+    "id": "FAERUN_HEAL_08",
+    "name": "Heilung",
+    "type": "heal",
+    "value": 8,
+    "text": "Du heilst 8 LP (max. Start-LP)."
+  },
+  {
+    "id": "FAERUN_POTION_08",
+    "name": "Heiltrank",
+    "type": "item",
+    "value": 8,
+    "text": "Item: +8 LP, einmal pro Kampf."
+  },
+  {
+    "id": "FAERUN_SWORD_05",
+    "name": "Runenschwert",
+    "type": "weapon",
+    "value": 5,
+    "text": "Waffe: Nächster Nah-Angriff +2 (insgesamt 5+2)."
+  },
+  {
+    "id": "FAERUN_LIGHTNING",
+    "name": "Blitzrune",
+    "type": "lightning",
+    "value": 0,
+    "text": "Sofort +1 zusätzliche Aktion."
+  },
+  {
+    "id": "FAERUN_DRAW_02",
+    "name": "Weisheit",
+    "type": "draw",
+    "value": 2,
+    "text": "Ziehe 2 Karten (digital später)."
+  }
+]

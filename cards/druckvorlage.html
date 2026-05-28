@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Faerûn – Karten drucken</title>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: Georgia, serif; padding: 1rem; background: #eee; }
+    h1 { font-size: 1.2rem; }
+    .hint { max-width: 40rem; margin-bottom: 1rem; color: #333; }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .card {
+      width: 63mm;
+      height: 88mm;
+      border: 2px solid #333;
+      border-radius: 4mm;
+      padding: 4mm;
+      background: #fffef8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      page-break-inside: avoid;
+    }
+    .card h2 { font-size: 11pt; margin: 0 0 2mm; text-align: center; }
+    .card .type { font-size: 8pt; color: #666; text-transform: uppercase; }
+    .card p { font-size: 8pt; flex: 1; text-align: center; line-height: 1.35; }
+    .card svg { margin-top: auto; max-width: 100%; }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <p class="no-print hint">
+    Karten für „Ritter auf Faerûn“. Barcodes werden aus <code>data/cards.json</code> geladen.
+    Drucken (Strg+P), schneiden, mattes Papier. Beim Spiel: Karte vor die <strong>Frontkamera</strong> halten.
+  </p>
+  <button class="no-print" onclick="window.print()">Drucken</button>
+  <div id="cards" class="grid"></div>
+
+  <script>
+    fetch("../data/cards.json")
+      .then((r) => r.json())
+      .then((cards) => {
+        const root = document.getElementById("cards");
+        cards.forEach((c) => {
+          const el = document.createElement("article");
+          el.className = "card";
+          el.innerHTML = `
+            <span class="type">${c.type}${c.subtype ? " · " + c.subtype : ""}</span>
+            <h2>${c.name}</h2>
+            <p>${c.text}</p>
+            <svg class="barcode"></svg>
+          `;
+          root.appendChild(el);
+          JsBarcode(el.querySelector(".barcode"), c.id, {
+            format: "CODE128",
+            width: 1.4,
+            height: 36,
+            displayValue: true,
+            fontSize: 10,
+            margin: 2,
+          });
+        });
+      })
+      .catch(() => {
+        document.getElementById("cards").innerHTML =
+          "<p>Bitte über lokalen Server öffnen (z. B. <code>python3 -m http.server</code>), damit cards.json geladen werden kann.</p>";
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+[
+  {
+    "id": "start",
+    "name": "Brunnenstadt",
+    "description": "Sichere Heimat – hier beginnt dein Abenteuer.",
+    "q": 8,
+    "r": 6,
+    "bossId": "dummy",
+    "bossName": "Übungs-Dummy",
+    "difficulty": 1,
+    "unlocked": true
+  },
+  {
+    "id": "drachenhoehle",
+    "name": "Drachenhöhle",
+    "description": "Heißer Wind und Klauenspuren am Höhleneingang.",
+    "q": 14,
+    "r": 4,
+    "bossId": "höhlenwyrm",
+    "bossName": "Höhlenwyrm",
+    "difficulty": 2,
+    "unlocked": false
+  },
+  {
+    "id": "nebelwald",
+    "name": "Wald der Nebel",
+    "description": "Dichter Nebel – man hört Schritte, sieht aber nichts.",
+    "q": 5,
+    "r": 3,
+    "bossId": "nebelgeist",
+    "bossName": "Nebelgeist",
+    "difficulty": 2,
+    "unlocked": false
+  },
+  {
+    "id": "eispass",
+    "name": "Eispass",
+    "description": "Eisige Pässe in den Nordbergen.",
+    "q": 12,
+    "r": 2,
+    "bossId": "frostriese",
+    "bossName": "Frostriese",
+    "difficulty": 3,
+    "unlocked": false
+  },
+  {
+    "id": "ruinen",
+    "name": "Ruinen von Eldoria",
+    "description": "Verfallene Türme voller alter Magie.",
+    "q": 16,
+    "r": 7,
+    "bossId": "schattenritter",
+    "bossName": "Schattenritter",
+    "difficulty": 3,
+    "unlocked": false
+  },
+  {
+    "id": "hafen",
+    "name": "Hafen der Sterne",
+    "description": "Letzter Hafen vor dem offenen Meer – und etwas darunter.",
+    "q": 3,
+    "r": 8,
+    "bossId": "seeschlange",
+    "bossName": "Seeschlange",
+    "difficulty": 4,
+    "unlocked": false
+  }
+]

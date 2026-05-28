@@ -1,6 +1,9 @@
 # Ritter auf Faerûn
 
-Browser-Spiel für GitHub Pages: Mit dem Ritter über die Karte laufen und Sterne auf Hex-Feldern einsammeln.
+Browser-Spiel für GitHub Pages: Fantasy-Karte, Reisen zu Orten, Boss-Kämpfe (inspiriert von **Boss Fighters QR**) und druckbare **Barcode-Karten**.
+
+📄 **Vollständiges Konzept:** [docs/SPIELKONZEPT.md](docs/SPIELKONZEPT.md)  
+🃏 **Karten drucken:** [cards/druckvorlage.html](cards/druckvorlage.html)
 
 ## Online spielen (GitHub Pages)
 
