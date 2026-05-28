@@ -18,7 +18,11 @@ const heroImg = new Image();
 
 const MAP_ASSETS = {
   faerun: ["assets/karte.webp", "assets/karte.jpg"],
-  kinder: ["assets/karte-kinder.svg"],
+  kinder: [
+    "assets/karte-kinder.webp",
+    "assets/karte-kinder.jpg",
+    "assets/karte-kinder.svg",
+  ],
 };
 
 const DIRS = [
@@ -75,7 +79,6 @@ const MapGame = {
 
   async reloadMapAssets() {
     const sources = MAP_ASSETS[GameData.mapId] || MAP_ASSETS.faerun;
-    mapImg.src = "";
     await this.loadImage(mapImg, sources);
     if (this.assetsReady) {
       this.buildGrid();
@@ -108,8 +111,13 @@ const MapGame = {
       setLoadStatus("", true);
       this.render();
     } catch (err) {
-      console.error(err);
-      setLoadStatus("Kartenwechsel fehlgeschlagen.", false);
+      console.error("Kartenwechsel:", err);
+      setLoadStatus(
+        err?.message || "Kartenwechsel fehlgeschlagen. Seite neu laden.",
+        false
+      );
+    } finally {
+      if (btnStart && this.assetsReady) btnStart.disabled = false;
     }
   },
 
@@ -136,14 +144,27 @@ const MapGame = {
 
   loadImage(img, sources) {
     return new Promise((resolve, reject) => {
+      const list = sources.filter(Boolean);
+      if (!list.length) {
+        reject(new Error("Keine Karten-Dateien konfiguriert."));
+        return;
+      }
       let i = 0;
-      const next = () => {
-        if (i >= sources.length) return reject();
-        img.src = sources[i++];
+      const tryNext = () => {
+        if (i >= list.length) {
+          reject(new Error(`Karte konnte nicht geladen werden (${list.join(", ")})`));
+          return;
+        }
+        const src = list[i++];
+        const probe = new Image();
+        probe.onload = () => {
+          img.src = src;
+          resolve(img);
+        };
+        probe.onerror = tryNext;
+        probe.src = src;
       };
-      img.onload = () => resolve(img);
-      img.onerror = next;
-      next();
+      tryNext();
     });
   },
 
