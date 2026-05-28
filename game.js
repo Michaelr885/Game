@@ -97,20 +97,20 @@ function fitZoomToScreen() {
   if (!mapImg.naturalWidth || !W) return;
   const scaleX = W / mapImg.naturalWidth;
   const scaleY = H / mapImg.naturalHeight;
-  zoom = Math.max(scaleX, scaleY) * 1.02;
+  zoom = Math.max(scaleX, scaleY);
 }
 
 function resizeCanvas() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  const rect = stageEl.getBoundingClientRect();
-  const cssW = Math.max(1, Math.floor(rect.width));
-  const cssH = Math.max(1, Math.floor(rect.height));
+  const cssW = window.innerWidth;
+  const cssH = window.innerHeight;
+  if (cssW < 2 || cssH < 2) return;
+
   W = Math.floor(cssW * dpr);
   H = Math.floor(cssH * dpr);
   canvas.width = W;
   canvas.height = H;
-  canvas.style.width = `${cssW}px`;
-  canvas.style.height = `${cssH}px`;
+
   if (assetsReady >= 2) {
     fitZoomToScreen();
     centerCamera();
@@ -207,6 +207,8 @@ function drawHexOutline(q, r, fill, stroke, lineW = 1) {
 }
 
 function drawMap() {
+  ctx.fillStyle = "#4a7a5a";
+  ctx.fillRect(0, 0, W, H);
   ctx.drawImage(
     mapImg,
     -cam.x,
@@ -394,6 +396,18 @@ canvas.addEventListener(
   { passive: false }
 );
 
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+function initLayout() {
+  resizeCanvas();
+  if (assetsReady >= 2) render();
+}
+
+window.addEventListener("resize", initLayout);
+window.addEventListener("orientationchange", initLayout);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initLayout);
+} else {
+  initLayout();
+}
+window.addEventListener("load", initLayout);
+
 requestAnimationFrame(loop);
