@@ -3,7 +3,7 @@
 Browser-Spiel für GitHub Pages: Fantasy-Karte, Reisen zu Orten, Boss-Kämpfe (inspiriert von **Boss Fighters QR**) und **faltbare QR-Karten** zum Ausdrucken.
 
 📄 **Vollständiges Konzept:** [docs/SPIELKONZEPT.md](docs/SPIELKONZEPT.md)  
-🃏 **Faltkarten drucken:** [cards/druckvorlage.html](cards/druckvorlage.html) (Vorne: Bild · Hinten: QR)
+🃏 **Karten als PDF:** [cards/Faerun-Faltkarten.pdf](cards/Faerun-Faltkarten.pdf) · [Download-Seite](cards/index.html)
 
 ## Online spielen (GitHub Pages)
 

@@ -7,6 +7,7 @@
     "value": 3,
     "emoji": "⚔️",
     "color": "#6a4a3a",
+    "image": "assets/cards/stahlschlag.png",
     "text": "Nah-Angriff: 3 Schaden am Boss."
   },
   {
@@ -17,6 +18,7 @@
     "value": 4,
     "emoji": "🏹",
     "color": "#3a5a4a",
+    "image": "assets/cards/pfeilhagel.png",
     "text": "Fern-Angriff: 4 Schaden am Boss."
   },
   {
@@ -27,6 +29,7 @@
     "value": 4,
     "emoji": "✨",
     "color": "#4a3a6a",
+    "image": "assets/cards/sonnenfeuer.png",
     "text": "Magie-Angriff: 4 Schaden am Boss."
   },
   {
@@ -36,6 +39,7 @@
     "value": 4,
     "emoji": "🛡️",
     "color": "#4a5a7a",
+    "image": "assets/cards/schild.png",
     "text": "Schutz: Geplanter Boss-Angriff −4."
   },
   {
@@ -45,6 +49,7 @@
     "value": 8,
     "emoji": "💚",
     "color": "#2a5a4a",
+    "image": "assets/cards/heilung.png",
     "text": "Du heilst 8 LP (max. Start-LP)."
   },
   {
@@ -54,6 +59,7 @@
     "value": 8,
     "emoji": "🧪",
     "color": "#3a6a5a",
+    "image": "assets/cards/heiltrank.png",
     "text": "Item: +8 LP, einmal pro Kampf."
   },
   {
@@ -63,6 +69,7 @@
     "value": 5,
     "emoji": "🗡️",
     "color": "#5a5a6a",
+    "image": "assets/cards/runenschwert.png",
     "text": "Waffe: Nächster Nah-Angriff +2."
   },
   {
@@ -72,6 +79,7 @@
     "value": 0,
     "emoji": "⚡",
     "color": "#6a6a2a",
+    "image": "assets/cards/blitzrune.png",
     "text": "Sofort +1 zusätzliche Aktion."
   },
   {
@@ -81,6 +89,7 @@
     "value": 2,
     "emoji": "📜",
     "color": "#4a4a5a",
+    "image": "assets/cards/weisheit.png",
     "text": "Ziehe 2 Karten (später im Deck)."
   }
 ]

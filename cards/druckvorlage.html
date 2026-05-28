@@ -2,273 +2,99 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Faerûn – Faltkarten drucken</title>
+  <title>Faerûn – Faltkarten (HTML)</title>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
   <style>
     * { box-sizing: border-box; }
-    body {
-      font-family: Georgia, "Times New Roman", serif;
+    body { font-family: Georgia, serif; padding: 1rem; background: #eee; color: #222; }
+    .banner {
+      max-width: 40rem;
+      margin-bottom: 1rem;
       padding: 1rem;
-      background: #ddd;
-      color: #222;
-    }
-    h1 { font-size: 1.25rem; margin-bottom: 0.5rem; }
-  .instructions {
-      max-width: 42rem;
-      margin-bottom: 1.25rem;
-      line-height: 1.5;
-      font-size: 0.95rem;
-    }
-    .instructions ol { margin: 0.5rem 0 0 1.2rem; }
-    .instructions li { margin-bottom: 0.35rem; }
-    .grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      justify-content: center;
-    }
-
-    /* Flache Karte: doppelt so hoch → falten */
-    .fold-card {
-      width: 63mm;
-      height: 176mm;
-      border: 1px dashed #999;
-      page-break-inside: avoid;
-      display: flex;
-      flex-direction: column;
       background: #fff;
+      border-radius: 8px;
+      border: 2px solid #c9a227;
     }
-
-    /* —— VORDERSEITE (oben) —— */
-    .card-front {
-      height: 88mm;
-      width: 100%;
-      padding: 3mm;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      border: 2px solid #333;
-      border-radius: 3mm 3mm 0 0;
-      position: relative;
-      overflow: hidden;
+    .banner a.download {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      background: #b8860b;
       color: #fff;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-    }
-    .card-front::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.35));
-      pointer-events: none;
-    }
-    .card-front .type {
-      font-size: 7pt;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      opacity: 0.9;
-      z-index: 1;
-    }
-    .card-front .emoji {
-      font-size: 28pt;
-      line-height: 1;
-      margin: 2mm 0;
-      z-index: 1;
-    }
-    .card-front h2 {
-      font-size: 12pt;
-      margin: 0;
-      text-align: center;
-      z-index: 1;
-    }
-    .card-front .value-badge {
-      position: absolute;
-      top: 3mm;
-      right: 3mm;
-      width: 10mm;
-      height: 10mm;
-      border-radius: 50%;
-      background: rgba(255,220,100,0.95);
-      color: #2a1a08;
       font-weight: bold;
-      font-size: 11pt;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-shadow: none;
-      border: 2px solid #8b6914;
-      z-index: 2;
+      text-decoration: none;
+      border-radius: 8px;
     }
-    .card-front .effect {
-      font-size: 7.5pt;
-      text-align: center;
-      line-height: 1.35;
-      margin-top: auto;
-      padding-top: 2mm;
-      z-index: 1;
+    .grid { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+    .fold-card { width: 63mm; height: 176mm; border: 1px dashed #999; page-break-inside: avoid; display: flex; flex-direction: column; background: #fff; }
+    .card-front {
+      height: 88mm; width: 100%; padding: 2mm; display: flex; flex-direction: column; align-items: center;
+      border: 2px solid #333; border-radius: 3mm 3mm 0 0; position: relative; overflow: hidden; color: #fff;
     }
-    .card-front .label-front {
-      font-size: 6pt;
-      opacity: 0.75;
-      margin-top: 1mm;
-      z-index: 1;
+    .card-front img.art {
+      width: 100%; height: 52mm; object-fit: cover; object-position: center;
+      border-radius: 2mm; margin-bottom: 2mm;
     }
-
-    /* Falzlinie */
-    .fold-line {
-      height: 0;
-      border-top: 2px dashed #c00;
-      position: relative;
-      flex-shrink: 0;
-    }
-    .fold-line span {
-      position: absolute;
-      left: 50%;
-      top: -10px;
-      transform: translateX(-50%);
-      background: #fff;
-      color: #c00;
-      font-size: 7pt;
-      padding: 0 3mm;
-      white-space: nowrap;
-      font-weight: bold;
-    }
-
-    /* —— RÜCKSEITE (unten, wird nach hinten gefaltet) —— */
+    .card-front h2 { font-size: 11pt; margin: 0; text-align: center; text-shadow: 0 1px 2px #000; }
+    .card-front .effect { font-size: 7pt; text-align: center; line-height: 1.3; padding: 0 2mm; }
+    .card-front .type { font-size: 6pt; text-transform: uppercase; opacity: 0.9; }
+    .fold-line { border-top: 2px dashed #c00; text-align: center; font-size: 7pt; color: #c00; font-weight: bold; padding: 1mm 0; }
     .card-back {
-      height: 88mm;
-      width: 100%;
-      padding: 4mm;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid #333;
-      border-top: none;
-      border-radius: 0 0 3mm 3mm;
-      background: #fffef5;
+      height: 88mm; width: 100%; padding: 4mm; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      border: 2px solid #333; border-top: none; border-radius: 0 0 3mm 3mm; background: #fffef5;
     }
-    .card-back .label-back {
-      font-size: 7pt;
-      color: #666;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 2mm;
-    }
-    .card-back canvas {
-      display: block;
-      width: 36mm !important;
-      height: 36mm !important;
-    }
-    .card-back .card-id {
-      font-size: 6pt;
-      color: #888;
-      margin-top: 2mm;
-      word-break: break-all;
-      text-align: center;
-      max-width: 100%;
-    }
-    .card-back .scan-hint {
-      font-size: 7pt;
-      color: #444;
-      margin-top: 2mm;
-      text-align: center;
-    }
-
-    @media print {
-      body { background: #fff; padding: 8mm; }
-      .no-print { display: none !important; }
-      .fold-card { border-color: #ccc; }
-    }
+    .card-back canvas { width: 36mm !important; height: 36mm !important; }
+    @media print { body { background: #fff; } .no-print { display: none; } }
   </style>
 </head>
 <body>
-  <div class="no-print">
-    <h1>Faerûn – Faltkarten mit QR-Code</h1>
-    <div class="instructions">
-      <p><strong>So faltest du jede Karte:</strong></p>
-      <ol>
-        <li>Seite <strong>drucken</strong> (Strg+P), am besten <strong>mattes</strong> Papier, Farbe.</li>
-        <li>Entlang der <strong style="color:#c00">roten Falzlinie</strong> in der Mitte falten – untere Hälfte nach <strong>hinten</strong> klappen.</li>
-        <li><strong>Vorne</strong> (oben): Bild, Name und Effekt · <strong>Hinten</strong> (unten, gefaltet): QR-Code zum Scannen.</li>
-        <li>Beim Spiel: Karte mit der <strong>Rückseite (QR)</strong> zur Tablet-<strong>Frontkamera</strong> halten (~15 cm).</li>
-      </ol>
-      <p>Optionales eigenes Bild: in <code>data/cards.json</code> Feld <code>"image": "assets/cards/mein-bild.png"</code> setzen.</p>
-    </div>
-    <button type="button" onclick="window.print()" style="padding:0.6rem 1.2rem;font-size:1rem;cursor:pointer;margin-bottom:1rem;">🖨️ Drucken</button>
+  <div class="banner no-print">
+    <strong>Tipp:</strong> Am einfachsten die fertige PDF nutzen:
+    <a class="download" href="Faerun-Faltkarten.pdf" download>📥 Faerun-Faltkarten.pdf</a>
+    <p style="margin:0.5rem 0 0;font-size:0.9rem;">Oder unten im Browser drucken (Strg+P).</p>
   </div>
-
+  <button class="no-print" type="button" onclick="window.print()" style="margin-bottom:1rem;padding:0.5rem 1rem;">🖨️ Drucken</button>
   <div id="cards" class="grid"></div>
-
   <script>
-    const TYPE_LABELS = {
-      attack: "Angriff",
-      protection: "Schutz",
-      heal: "Heilung",
-      item: "Item",
-      weapon: "Waffe",
-      lightning: "Blitz",
-      draw: "Zug",
-    };
-
-    function escapeHtml(s) {
-      return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
+    const BASE = document.currentScript?.src
+      ? new URL(".", document.currentScript.src).href
+      : location.href.replace(/[^/]+$/, "");
+    const dataUrl = new URL("../data/cards.json", BASE).href;
+    const assetBase = new URL("../", BASE).href;
 
     async function buildCard(c) {
       const el = document.createElement("article");
       el.className = "fold-card";
-
-      const bg = c.color || "#4a5a7a";
-      const emoji = c.emoji || "🃏";
-      const typeLabel = TYPE_LABELS[c.type] || c.type;
-      const sub = c.subtype ? ` · ${c.subtype}` : "";
-      const val = c.value > 0 ? String(c.value) : "★";
-
-      let artHtml = `<div class="emoji" aria-hidden="true">${emoji}</div>`;
-      if (c.image) {
-        artHtml = `<img src="../${c.image}" alt="" style="max-height:32mm;max-width:90%;object-fit:contain;z-index:1;position:relative;border-radius:4px;" />`;
-      }
-
+      const imgSrc = c.image ? new URL(c.image, assetBase).href : "";
+      const art = imgSrc
+        ? `<img class="art" src="${imgSrc}" alt="" />`
+        : `<div style="font-size:3rem">${c.emoji || "🃏"}</div>`;
       el.innerHTML = `
-        <div class="card-front" style="background: linear-gradient(145deg, ${bg}, #1a1a2a);">
-          <span class="type">${escapeHtml(typeLabel + sub)}</span>
-          <div class="value-badge">${escapeHtml(val)}</div>
-          ${artHtml}
-          <h2>${escapeHtml(c.name)}</h2>
-          <p class="effect">${escapeHtml(c.text)}</p>
-          <span class="label-front">Vorderseite</span>
+        <div class="card-front" style="background:linear-gradient(180deg,${c.color || "#4a5a7a"},#1a1a2a)">
+          <span class="type">${c.type}</span>
+          ${art}
+          <h2>${c.name}</h2>
+          <p class="effect">${c.text}</p>
         </div>
-        <div class="fold-line"><span>✂ Hier falten</span></div>
+        <div class="fold-line">✂ HIER FALTEN</div>
         <div class="card-back">
-          <span class="label-back">Rückseite · Scan</span>
+          <span style="font-size:7pt;color:#666">RÜCKSEITE · SCAN</span>
           <canvas class="qr"></canvas>
-          <span class="card-id">${escapeHtml(c.id)}</span>
-          <span class="scan-hint">QR zur Frontkamera</span>
-        </div>
-      `;
-
-      const canvas = el.querySelector(".qr");
-      await QRCode.toCanvas(canvas, c.id, {
-        width: 280,
-        margin: 1,
-        errorCorrectionLevel: "M",
-        color: { dark: "#1a1a2a", light: "#fffef5" },
-      });
-
+          <span style="font-size:6pt;color:#888">${c.id}</span>
+        </div>`;
+      await QRCode.toCanvas(el.querySelector(".qr"), c.id, { width: 260, margin: 1 });
       return el;
     }
 
-    fetch("../data/cards.json")
-      .then((r) => r.json())
+    fetch(dataUrl)
+      .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(async (cards) => {
         const root = document.getElementById("cards");
-        for (const c of cards) {
-          root.appendChild(await buildCard(c));
-        }
+        for (const c of cards) root.appendChild(await buildCard(c));
       })
-      .catch(() => {
+      .catch((e) => {
         document.getElementById("cards").innerHTML =
-          "<p>Bitte über Webserver öffnen (z. B. <code>python3 -m http.server</code> im Projektroot).</p>";
+          `<p>Fehler beim Laden (${e.message}). Bitte <a href="Faerun-Faltkarten.pdf">PDF herunterladen</a>.</p>`;
       });
   </script>
 </body>
