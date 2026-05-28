@@ -21,7 +21,7 @@ const MAP_ASSETS = {
   kinder: [
     "assets/karte-kinder.webp",
     "assets/karte-kinder.jpg",
-    "assets/karte-kinder.svg",
+    "assets/karte-kinder.png",
   ],
 };
 

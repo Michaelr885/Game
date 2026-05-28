@@ -28,7 +28,7 @@ Dateien in `assets/` ersetzen:
 | Datei | Inhalt |
 |--------|--------|
 | `karte.webp` / `karte.jpg` | Fantasy-Karte (klein, schnell) |
-| `karte-kinder.webp` / `.jpg` / `.svg` | Kindgerechte Karte (WebP bevorzugt im Spiel) |
+| `karte-kinder.png` / `.webp` / `.jpg` | Fantasy-Weltkarte für Abenteuerland (Orte in `locations-kinder.json`) |
 | `aaaaGemini_….webp` / `.png` | Ritter-Figur |
 
 ## Steuerung
