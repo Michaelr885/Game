@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sternen-Fänger</title>
+  <title>Ritter auf Faerûn</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="sky">
-    <div class="cloud cloud-1"></div>
-    <div class="cloud cloud-2"></div>
-    <div class="cloud cloud-3"></div>
-  </div>
-
   <main class="game-wrap">
     <header class="hud">
+      <div class="hud-hero">
+        <img src="assets/ritter.png" alt="" class="hud-portrait" width="48" height="48" />
+        <div>
+          <span class="label">Abenteurer</span>
+          <strong>Ritter</strong>
+        </div>
+      </div>
       <div class="hud-item">
-        <span class="label">Punkte</span>
+        <span class="label">Sterne</span>
         <strong id="score">0</strong>
       </div>
       <div class="hud-item">
@@ -25,20 +26,24 @@
       </div>
     </header>
 
-    <section id="screen-start" class="overlay active">
-      <h1>⭐ Sternen-Fänger ⭐</h1>
-      <p>Fange die fallenden Sterne mit deinem Korb!</p>
-      <p class="controls-hint">← → oder A / D &nbsp;·&nbsp; auch Touch</p>
-      <button id="btn-start" class="btn">Los geht's!</button>
-    </section>
+    <div class="stage">
+      <section id="screen-start" class="overlay active">
+        <h1>⚔️ Ritter auf Faerûn ⚔️</h1>
+        <p>Bewege deinen Ritter über die Karte und sammle die leuchtenden Sterne ein!</p>
+        <p class="controls-hint">Pfeiltasten / WASD · Q und E für schräg · Klick · Mausrad zoomen</p>
+        <button id="btn-start" class="btn">Abenteuer starten</button>
+      </section>
 
-    <section id="screen-over" class="overlay">
-      <h1>Super gemacht!</h1>
-      <p>Dein Ergebnis: <strong id="final-score">0</strong> Punkte</p>
-      <button id="btn-restart" class="btn">Nochmal spielen</button>
-    </section>
+      <section id="screen-over" class="overlay">
+        <h1>Abenteuer beendet!</h1>
+        <p>Du hast <strong id="final-score">0</strong> Sterne gesammelt.</p>
+        <button id="btn-restart" class="btn">Nochmal spielen</button>
+      </section>
 
-    <canvas id="game" width="480" height="640" aria-label="Spielbereich"></canvas>
+      <canvas id="game" width="900" height="560" aria-label="Karte von Faerûn"></canvas>
+    </div>
+
+    <p class="hint-bar">Tipp: Ersetze <code>assets/karte.png</code> und <code>assets/ritter.png</code> mit euren eigenen Bildern.</p>
   </main>
 
   <script src="game.js"></script>

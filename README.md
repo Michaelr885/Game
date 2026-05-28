@@ -1,16 +1,8 @@
-# Sternen-Fänger
+# Ritter auf Faerûn
 
-Ein kleines Browser-Spiel für Kinder: Fange fallende Sterne mit dem Korb.
+Ein kleines Browser-Spiel: Mit dem Ritter über eine Fantasy-Karte laufen und Sterne auf Hex-Feldern einsammeln.
 
 ## Spielen
-
-Datei im Browser öffnen:
-
-```bash
-xdg-open spiel/index.html
-```
-
-Oder mit einem lokalen Server:
 
 ```bash
 cd spiel && python3 -m http.server 8080
@@ -18,7 +10,17 @@ cd spiel && python3 -m http.server 8080
 
 Dann im Browser: `http://localhost:8080`
 
+## Eigene Bilder verwenden
+
+Lege deine Dateien in `spiel/assets/` ab (gleiche Dateinamen überschreiben die Platzhalter):
+
+| Datei | Inhalt |
+|--------|--------|
+| `karte.png` | Deine Faerûn-Karte (Querformat mit Hex-Raster) |
+| `ritter.png` | Deine Ritter-Figur (am besten PNG mit transparentem Hintergrund) |
+
 ## Steuerung
 
-- Pfeiltasten oder **A** / **D**
-- Auf dem Handy/Tablet: Finger auf dem Spielfeld ziehen
+- **Pfeiltasten** – Ritter bewegt sich zu benachbarten Hex-Feldern
+- **Klick** – auf ein angrenzendes Feld klicken
+- **Mausrad** – Karte zoomen

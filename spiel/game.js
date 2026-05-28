@@ -11,30 +11,98 @@ const btnRestart = document.getElementById("btn-restart");
 
 const W = canvas.width;
 const H = canvas.height;
+const HEX = 26;
+const SQRT3 = Math.sqrt(3);
 
-const player = {
-  x: W / 2,
-  y: H - 52,
-  w: 72,
-  h: 28,
-  speed: 6,
-};
+const mapImg = new Image();
+const heroImg = new Image();
+mapImg.src = "assets/karte.png";
+heroImg.src = "assets/ritter.png";
 
+const DIRS = [
+  { q: 1, r: 0, keys: ["ArrowRight", "d", "D"] },
+  { q: 1, r: -1, keys: ["e", "E"] },
+  { q: 0, r: -1, keys: ["ArrowUp", "w", "W"] },
+  { q: -1, r: 0, keys: ["ArrowLeft", "a", "A"] },
+  { q: -1, r: 1, keys: ["q", "Q"] },
+  { q: 0, r: 1, keys: ["ArrowDown", "s", "S"] },
+];
+
+function hexDistance(q1, r1, q2, r2) {
+  const s1 = -q1 - r1;
+  const s2 = -q2 - r2;
+  return Math.max(Math.abs(q1 - q2), Math.abs(r1 - r2), Math.abs(s1 - s2));
+}
+
+let grid = { cols: 0, rows: 0, originX: 0, originY: 0 };
+let player = { q: 0, r: 0 };
 let stars = [];
 let score = 0;
 let lives = 3;
 let running = false;
-let spawnTimer = 0;
-let keys = { left: false, right: false };
-let pointerX = null;
+let moveCooldown = 0;
+let starTimer = 0;
+let zoom = 1;
+let cam = { x: 0, y: 0 };
+let assetsReady = 0;
+let pendingMove = null;
+
+function axialToPixel(q, r) {
+  const x = HEX * (SQRT3 * q + (SQRT3 / 2) * r) + grid.originX;
+  const y = HEX * ((3 / 2) * r) + grid.originY;
+  return { x, y };
+}
+
+function pixelToAxial(x, y) {
+  const px = x - grid.originX;
+  const py = y - grid.originY;
+  const r = ((2 / 3) * py) / HEX;
+  const q = (px / (SQRT3 * HEX)) - r / 2;
+  return axialRound(q, r);
+}
+
+function axialRound(q, r) {
+  let x = q;
+  let z = r;
+  let y = -x - z;
+  let rx = Math.round(x);
+  let ry = Math.round(y);
+  let rz = Math.round(z);
+  const xDiff = Math.abs(rx - x);
+  const yDiff = Math.abs(ry - y);
+  const zDiff = Math.abs(rz - z);
+  if (xDiff > yDiff && xDiff > zDiff) rx = -ry - rz;
+  else if (yDiff > zDiff) ry = -rx - rz;
+  else rz = -rx - ry;
+  return { q: rx, r: rz };
+}
+
+function inBounds(q, r) {
+  return q >= 0 && r >= 0 && q < grid.cols && r < grid.rows;
+}
+
+function buildGrid() {
+  const marginX = 80;
+  const marginY = 60;
+  const usableW = mapImg.naturalWidth - marginX * 2;
+  const usableH = mapImg.naturalHeight - marginY * 2;
+  grid.cols = Math.floor(usableW / (SQRT3 * HEX)) - 1;
+  grid.rows = Math.floor(usableH / ((3 / 2) * HEX)) - 1;
+  grid.originX = marginX + HEX;
+  grid.originY = marginY + HEX;
+}
 
 function resetGame() {
+  player.q = Math.floor(grid.cols / 2);
+  player.r = Math.floor(grid.rows / 2);
   stars = [];
   score = 0;
   lives = 3;
-  player.x = W / 2;
-  spawnTimer = 0;
+  starTimer = 0;
+  moveCooldown = 0;
+  spawnStar();
   updateHud();
+  centerCamera();
 }
 
 function updateHud() {
@@ -43,196 +111,207 @@ function updateHud() {
 }
 
 function spawnStar() {
-  const size = 18 + Math.random() * 14;
-  stars.push({
-    x: 40 + Math.random() * (W - 80),
-    y: -size,
-    size,
-    speed: 2.2 + Math.random() * 2.5,
-    wobble: Math.random() * Math.PI * 2,
-    spin: (Math.random() - 0.5) * 0.08,
-  });
-}
-
-function drawBackground() {
-  const grassY = H * 0.82;
-  const grad = ctx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0, "#7ec8ff");
-  grad.addColorStop(0.55, "#d4f1ff");
-  grad.addColorStop(0.82, "#b8f0a0");
-  grad.addColorStop(1, "#6bc96b");
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
-
-  ctx.fillStyle = "#5cb85c";
-  ctx.fillRect(0, grassY, W, H - grassY);
-
-  for (let i = 0; i < 8; i++) {
-    const fx = ((i * 97 + Date.now() * 0.02) % (W + 40)) - 20;
-    const fy = grassY + 8 + (i % 3) * 6;
-    ctx.fillStyle = "#4a9e4a";
-    ctx.beginPath();
-    ctx.ellipse(fx, fy, 6, 3, 0, 0, Math.PI * 2);
-    ctx.fill();
+  if (stars.length >= 4) return;
+  let tries = 0;
+  while (tries < 40) {
+    const q = Math.floor(Math.random() * grid.cols);
+    const r = Math.floor(Math.random() * grid.rows);
+    const taken =
+      (player.q === q && player.r === r) ||
+      stars.some((s) => s.q === q && s.r === r);
+    if (!taken) {
+      stars.push({ q, r, pulse: Math.random() * Math.PI * 2 });
+      return;
+    }
+    tries++;
   }
 }
 
-function drawStar(s) {
-  ctx.save();
-  ctx.translate(s.x, s.y);
-  ctx.rotate(s.wobble);
+function tryMove(dq, dr) {
+  const nq = player.q + dq;
+  const nr = player.r + dr;
+  if (!inBounds(nq, nr)) return;
+  player.q = nq;
+  player.r = nr;
+  moveCooldown = 140;
 
-  const r = s.size;
+  for (let i = stars.length - 1; i >= 0; i--) {
+    if (stars[i].q === player.q && stars[i].r === player.r) {
+      stars.splice(i, 1);
+      score += 10;
+      updateHud();
+      spawnStar();
+    }
+  }
+  centerCamera();
+}
+
+function centerCamera() {
+  const p = axialToPixel(player.q, player.r);
+  cam.x = p.x * zoom - W / 2;
+  cam.y = p.y * zoom - H / 2;
+  const maxX = mapImg.naturalWidth * zoom - W;
+  const maxY = mapImg.naturalHeight * zoom - H;
+  cam.x = Math.max(0, Math.min(maxX, cam.x));
+  cam.y = Math.max(0, Math.min(maxY, cam.y));
+}
+
+function drawHexOutline(q, r, fill, stroke, lineW = 1) {
+  const { x, y } = axialToPixel(q, r);
+  const sx = x * zoom - cam.x;
+  const sy = y * zoom - cam.y;
+  ctx.beginPath();
+  for (let i = 0; i < 6; i++) {
+    const angle = (Math.PI / 180) * (60 * i - 30);
+    const hx = sx + HEX * zoom * Math.cos(angle);
+    const hy = sy + HEX * zoom * Math.sin(angle);
+    if (i === 0) ctx.moveTo(hx, hy);
+    else ctx.lineTo(hx, hy);
+  }
+  ctx.closePath();
+  if (fill) {
+    ctx.fillStyle = fill;
+    ctx.fill();
+  }
+  if (stroke) {
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = lineW;
+    ctx.stroke();
+  }
+}
+
+function drawMap() {
+  ctx.drawImage(
+    mapImg,
+    -cam.x,
+    -cam.y,
+    mapImg.naturalWidth * zoom,
+    mapImg.naturalHeight * zoom
+  );
+}
+
+function drawGridHints() {
+  const { q, r } = player;
+  for (const dir of DIRS) {
+    const nq = q + dir.q;
+    const nr = r + dir.r;
+    if (!inBounds(nq, nr)) continue;
+    drawHexOutline(nq, nr, "rgba(255, 220, 100, 0.12)", "rgba(255, 220, 100, 0.35)", 1.5);
+  }
+  drawHexOutline(q, r, "rgba(100, 180, 255, 0.18)", "rgba(140, 200, 255, 0.55)", 2);
+}
+
+function drawStar(s) {
+  const { x, y } = axialToPixel(s.q, s.r);
+  const sx = x * zoom - cam.x;
+  const sy = y * zoom - cam.y;
+  s.pulse += 0.08;
+  const glow = 14 + Math.sin(s.pulse) * 4;
+
+  ctx.save();
+  ctx.shadowColor = "#ffe566";
+  ctx.shadowBlur = 16;
   ctx.fillStyle = "#ffe566";
-  ctx.strokeStyle = "#f5a623";
-  ctx.lineWidth = 2;
   ctx.beginPath();
   for (let i = 0; i < 5; i++) {
     const outer = (i * 4 * Math.PI) / 5 - Math.PI / 2;
     const inner = outer + Math.PI / 5;
-    ctx.lineTo(Math.cos(outer) * r, Math.sin(outer) * r);
-    ctx.lineTo(Math.cos(inner) * r * 0.45, Math.sin(inner) * r * 0.45);
+    ctx.lineTo(sx + Math.cos(outer) * glow, sy + Math.sin(outer) * glow);
+    ctx.lineTo(sx + Math.cos(inner) * glow * 0.45, sy + Math.sin(inner) * glow * 0.45);
   }
   ctx.closePath();
   ctx.fill();
-  ctx.stroke();
-
-  ctx.fillStyle = "rgba(255,255,255,0.7)";
-  ctx.beginPath();
-  ctx.arc(-r * 0.2, -r * 0.2, r * 0.15, 0, Math.PI * 2);
-  ctx.fill();
-
   ctx.restore();
 }
 
-function drawPlayer() {
-  const { x, y, w, h } = player;
-  const left = x - w / 2;
+function drawHero() {
+  const { x, y } = axialToPixel(player.q, player.r);
+  const sx = x * zoom - cam.x;
+  const sy = y * zoom - cam.y;
+  const size = HEX * zoom * 2.4;
 
-  ctx.fillStyle = "#8B4513";
+  ctx.save();
   ctx.beginPath();
-  ctx.roundRect(left, y, w, h, 6);
+  ctx.ellipse(sx, sy + size * 0.35, size * 0.45, size * 0.12, 0, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(0,0,0,0.35)";
   ctx.fill();
+  ctx.restore();
 
-  ctx.strokeStyle = "#5d2e0a";
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  ctx.fillStyle = "#deb887";
-  for (let i = 0; i < 5; i++) {
-    ctx.fillRect(left + 8 + i * 13, y + 4, 8, h - 8);
-  }
-
-  ctx.fillStyle = "#ff6b9d";
-  ctx.beginPath();
-  ctx.arc(x, y - 14, 16, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.fillStyle = "#fff";
-  ctx.beginPath();
-  ctx.arc(x - 5, y - 16, 4, 0, Math.PI * 2);
-  ctx.arc(x + 7, y - 16, 4, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.fillStyle = "#333";
-  ctx.beginPath();
-  ctx.arc(x - 5, y - 16, 2, 0, Math.PI * 2);
-  ctx.arc(x + 7, y - 16, 2, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.strokeStyle = "#333";
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.arc(x, y - 12, 6, 0.1, Math.PI - 0.1);
-  ctx.stroke();
+  const w = size * 0.85;
+  const h = size * 1.15;
+  ctx.drawImage(heroImg, sx - w / 2, sy - h * 0.85, w, h);
 }
 
-function rectsOverlap(ax, ay, aw, ah, bx, by, bw, bh) {
-  return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
+function render() {
+  ctx.fillStyle = "#0f1824";
+  ctx.fillRect(0, 0, W, H);
+  if (assetsReady < 2) {
+    ctx.fillStyle = "#8aa4c4";
+    ctx.font = "18px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("Karte wird geladen …", W / 2, H / 2);
+    return;
+  }
+  drawMap();
+  if (running) drawGridHints();
+  for (const s of stars) drawStar(s);
+  drawHero();
 }
 
-function updatePlayer() {
-  if (keys.left) player.x -= player.speed;
-  if (keys.right) player.x += player.speed;
+function update(dt) {
+  if (!running || assetsReady < 2) return;
 
-  if (pointerX !== null) {
-    const target = pointerX;
-    const diff = target - player.x;
-    player.x += Math.sign(diff) * Math.min(Math.abs(diff), player.speed * 1.4);
+  moveCooldown = Math.max(0, moveCooldown - dt);
+
+  if (pendingMove && moveCooldown === 0) {
+    tryMove(pendingMove.dq, pendingMove.dr);
+    pendingMove = null;
   }
 
-  const half = player.w / 2 + 4;
-  player.x = Math.max(half, Math.min(W - half, player.x));
-}
-
-function updateStars(dt) {
-  spawnTimer += dt;
-  const interval = Math.max(420, 900 - score * 8);
-  if (spawnTimer >= interval) {
-    spawnTimer = 0;
-    spawnStar();
-  }
-
-  const basket = {
-    x: player.x - player.w / 2,
-    y: player.y - 4,
-    w: player.w,
-    h: player.h + 8,
-  };
-
-  for (let i = stars.length - 1; i >= 0; i--) {
-    const s = stars[i];
-    s.y += s.speed;
-    s.wobble += s.spin;
-
-    const hit = rectsOverlap(
-      basket.x,
-      basket.y,
-      basket.w,
-      basket.h,
-      s.x - s.size,
-      s.y - s.size,
-      s.size * 2,
-      s.size * 2
-    );
-
-    if (hit) {
-      stars.splice(i, 1);
-      score += 10;
-      updateHud();
-      continue;
-    }
-
-    if (s.y - s.size > H) {
-      stars.splice(i, 1);
+  starTimer += dt;
+  if (starTimer >= 12000) {
+    starTimer = 0;
+    if (stars.length > 0) {
+      stars.shift();
       lives -= 1;
       updateHud();
+      if (stars.length === 0) spawnStar();
       if (lives <= 0) endGame();
     }
   }
 }
 
-function loop(timestamp) {
-  if (!running) return;
-  const dt = 16;
-  updatePlayer();
-  updateStars(dt);
+let last = 0;
+function loop(ts) {
+  const dt = last ? Math.min(ts - last, 50) : 16;
+  last = ts;
+  update(dt);
   render();
   requestAnimationFrame(loop);
 }
 
-function render() {
-  drawBackground();
-  for (const s of stars) drawStar(s);
-  drawPlayer();
+function queueMove(dq, dr) {
+  if (!running || moveCooldown > 0) return;
+  pendingMove = { dq, dr };
+}
+
+function screenToMap(clientX, clientY) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = W / rect.width;
+  const scaleY = H / rect.height;
+  const sx = (clientX - rect.left) * scaleX;
+  const sy = (clientY - rect.top) * scaleY;
+  const mx = (sx + cam.x) / zoom;
+  const my = (sy + cam.y) / zoom;
+  return pixelToAxial(mx, my);
 }
 
 function startGame() {
+  if (assetsReady < 2) return;
   resetGame();
   screenStart.classList.remove("active");
   screenOver.classList.remove("active");
   running = true;
-  requestAnimationFrame(loop);
 }
 
 function endGame() {
@@ -241,40 +320,49 @@ function endGame() {
   screenOver.classList.add("active");
 }
 
+function onAssetLoad() {
+  assetsReady += 1;
+  if (assetsReady === 2) {
+    buildGrid();
+    resetGame();
+    render();
+  }
+}
+
+mapImg.onload = onAssetLoad;
+heroImg.onload = onAssetLoad;
+mapImg.onerror = heroImg.onerror = () => {
+  assetsReady = 2;
+  render();
+};
+
 btnStart.addEventListener("click", startGame);
 btnRestart.addEventListener("click", startGame);
 
 window.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") keys.left = true;
-  if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") keys.right = true;
+  if (!running) return;
+  const dir = DIRS.find((d) => d.keys.includes(e.key));
+  if (!dir) return;
+  e.preventDefault();
+  queueMove(dir.q, dir.r);
 });
 
-window.addEventListener("keyup", (e) => {
-  if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") keys.left = false;
-  if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") keys.right = false;
+canvas.addEventListener("click", (e) => {
+  if (!running) return;
+  const target = screenToMap(e.clientX, e.clientY);
+  if (hexDistance(player.q, player.r, target.q, target.r) !== 1) return;
+  queueMove(target.q - player.q, target.r - player.r);
 });
 
-function canvasToGameX(clientX) {
-  const rect = canvas.getBoundingClientRect();
-  const scale = W / rect.width;
-  return (clientX - rect.left) * scale;
-}
+canvas.addEventListener(
+  "wheel",
+  (e) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.08 : 0.08;
+    zoom = Math.max(0.55, Math.min(1.35, zoom + delta));
+    centerCamera();
+  },
+  { passive: false }
+);
 
-canvas.addEventListener("pointerdown", (e) => {
-  canvas.setPointerCapture(e.pointerId);
-  pointerX = canvasToGameX(e.clientX);
-});
-
-canvas.addEventListener("pointermove", (e) => {
-  if (e.buttons) pointerX = canvasToGameX(e.clientX);
-});
-
-canvas.addEventListener("pointerup", () => {
-  pointerX = null;
-});
-
-canvas.addEventListener("pointerleave", () => {
-  pointerX = null;
-});
-
-render();
+requestAnimationFrame(loop);
