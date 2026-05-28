@@ -1,26 +1,34 @@
 # Ritter auf Faerûn
 
-Ein kleines Browser-Spiel: Mit dem Ritter über eine Fantasy-Karte laufen und Sterne auf Hex-Feldern einsammeln.
+Browser-Spiel für GitHub Pages: Mit dem Ritter über die Karte laufen und Sterne auf Hex-Feldern einsammeln.
 
-## Spielen
+## Online spielen (GitHub Pages)
+
+1. Repository → **Settings** → **Pages**
+2. **Source:** Branch `main`, Ordner `/ (root)`
+3. Nach dem Deploy: `https://<dein-user>.github.io/Game/`
+
+Die Startseite ist `index.html` im Repository-Root.
+
+## Lokal testen
 
 ```bash
-cd spiel && python3 -m http.server 8080
+python3 -m http.server 8080
 ```
 
-Dann im Browser: `http://localhost:8080`
+Dann: `http://localhost:8080`
 
-## Eigene Bilder verwenden
+## Eigene Bilder
 
-Lege deine Dateien in `spiel/assets/` ab (gleiche Dateinamen überschreiben die Platzhalter):
+Dateien in `assets/` ersetzen:
 
 | Datei | Inhalt |
 |--------|--------|
-| `karte.png` | Deine Faerûn-Karte (Querformat mit Hex-Raster) |
-| `ritter.png` | Deine Ritter-Figur (am besten PNG mit transparentem Hintergrund) |
+| `karte.png` | Fantasy-Karte (Querformat) |
+| `ritter.png` | Ritter-Figur (PNG mit transparentem Hintergrund) |
 
 ## Steuerung
 
-- **Pfeiltasten** – Ritter bewegt sich zu benachbarten Hex-Feldern
-- **Klick** – auf ein angrenzendes Feld klicken
-- **Mausrad** – Karte zoomen
+- Pfeiltasten / WASD (+ Q/E schräg)
+- Klick auf benachbartes Hex-Feld
+- Mausrad zum Zoomen
