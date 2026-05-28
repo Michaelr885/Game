@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 853" width="1280" height="853">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#87ceeb"/>
+      <stop offset="55%" stop-color="#b8e4f8"/>
+      <stop offset="100%" stop-color="#d4f0c8"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7ec850"/>
+      <stop offset="100%" stop-color="#5aad38"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5ec8f0"/>
+      <stop offset="100%" stop-color="#2a8ec8"/>
+    </linearGradient>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Himmel & Wiese -->
+  <rect width="1280" height="853" fill="url(#sky)"/>
+  <ellipse cx="200" cy="120" rx="70" ry="35" fill="#fff" opacity="0.9"/>
+  <ellipse cx="250" cy="115" rx="55" ry="30" fill="#fff" opacity="0.85"/>
+  <ellipse cx="1050" cy="90" rx="80" ry="40" fill="#fff" opacity="0.85"/>
+  <ellipse cx="1100" cy="95" rx="60" ry="32" fill="#fff" opacity="0.8"/>
+  <circle cx="1150" cy="70" r="42" fill="#ffe566" opacity="0.95"/>
+
+  <path d="M0 180 Q320 140 640 170 T1280 200 L1280 853 L0 853 Z" fill="url(#grass)"/>
+
+  <!-- Nordberge -->
+  <path d="M0 220 L180 80 L360 200 L520 60 L700 190 L900 50 L1100 180 L1280 100 L1280 280 L0 300 Z" fill="#8a9ab0"/>
+  <path d="M100 200 L260 120 L420 210 L600 100 L780 220 L950 90 L1150 200 L1280 150 L1280 260 L0 280 Z" fill="#a8b8c8" opacity="0.85"/>
+  <text x="827" y="175" text-anchor="middle" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="18" font-weight="bold" fill="#3a4a5a">ð Drachenberg</text>
+
+  <!-- Flüsse -->
+  <path d="M827 242 C780 280 720 310 650 340 C600 360 560 370 534 359" fill="none" stroke="#3a9ad4" stroke-width="22" stroke-linecap="round" opacity="0.85"/>
+  <path d="M309 203 C380 250 450 300 500 330 C515 340 525 350 534 359" fill="none" stroke="#3a9ad4" stroke-width="16" stroke-linecap="round" opacity="0.8"/>
+  <path d="M534 359 C480 400 450 420 421 398" fill="none" stroke="#3a9ad4" stroke-width="14" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- Silbersee -->
+  <ellipse cx="534" cy="365" rx="120" ry="75" fill="url(#water)" filter="url(#soft)"/>
+  <ellipse cx="500" cy="350" rx="35" ry="12" fill="#fff" opacity="0.35"/>
+  <text x="534" y="380" text-anchor="middle" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="22" font-weight="bold" fill="#fff" stroke="#1a6090" stroke-width="0.5"><Þ Silbersee</text>
+
+  <!-- Westlicher Wald -->
+  <ellipse cx="200" cy="280" rx="160" ry="120" fill="#3d8a3a" opacity="0.75"/>
+  <ellipse cx="280" cy="320" rx="100" ry="80" fill="#2d7a2d" opacity="0.8"/>
+
+  <!-- Waldhütte -->
+  <g transform="translate(309,203)" filter="url(#soft)">
+    <rect x="-35" y="-5" width="70" height="45" rx="4" fill="#8b5a2b"/>
+    <polygon points="-45,-5 0,-45 45,-5" fill="#c44"/>
+    <rect x="-12" y="18" width="24" height="22" rx="2" fill="#5a3a1a"/>
+    <circle cx="28" cy="8" r="6" fill="#ffcc00" opacity="0.9"/>
+  </g>
+  <text x="309" y="268" text-anchor="middle" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="17" font-weight="bold" fill="#2a4a20">=Ö Waldhütte</text>
+
+  <!-- Eichenriese -->
+  <g transform="translate(399,281)" filter="url(#soft)">
+    <rect x="-8" y="15" width="16" height="45" fill="#6b4423"/>
+    <circle cx="0" cy="-10" r="55" fill="#2d8a2d"/>
+    <circle cx="-25" cy="5" r="35" fill="#3da03d"/>
+    <circle cx="28" cy="0" r="38" fill="#45a845"/>
+    <circle cx="0" cy="-35" r="28" fill="#55b855"/>
+  </g>
+  <text x="399" y="355" text-anchor="middle" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="17" font-weight="bold" fill="#1a4020"><3 Eichenriese</text>
+
+  <!-- Friedhof -->
+  <g transform="translate(624,203)" filter="url(#soft)">
+    <rect x="-50" y="0" width="100" height="55" fill="#6a7a6a" rx="4"/>
+    <path d="M-20 0 L-20 -35 L0 -55 L20 -35 L20 0 Z" fill="#9aa0a8"/>
+    <rect x="-38" y="12" width="12" height="22" fill="#555"/>
+    <rect x="-8" y="8" width="14" height="28" fill="#555"/>
+    <rect x="18" y="15" width="12" height="20" fill="#555"/>
+    <ellipse cx="0" cy="48" rx="55" ry="8" fill="#000" opacity="0.15"/>
+  </g>
+  <text x="624" y="278" text-anchor="middle" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="16" font-weight="bold" fill="#3a3a4a">>¦ Friedhof</text>
+
+  <!-- Brücke -->
+  <g transform="translate(759,281)" filter="url(#soft)">
+    <path d="M-80 25 Q0 -15 80 25" fill="none" stroke="#6b5030" stroke-width="8"/>
+    <rect x="-70" y="20" width="140" height="12" rx="3" fill="#c9a050"/>
+    <rect x="-65" y="8" width="8" height="35" fill="#8b6914"/>
+    <rect x="57" y="8" width="8" height="35" fill="#8b6914"/>
+    <ellipse cx="0" cy="40" rx="90" ry="18" fill="#3a9ad4" opacity="0.6"/>
+  </g>
+  <text x="759" y="340" text-anchor="middle" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="17" font-weight="bold" fill="#4a3a20"><	 Brückental</text>
+
+  <!-- Sonnenburg (Stadt) -->
+  <g transform="translate(601,320)" filter="url(#soft)">
+    <rect x="-70" y="10" width="140" height="55" fill="#d4c4a8" rx="4"/>
+    <rect x="-55" y="-25" width="35" height="45" fill="#e8dcc8"/>
+    <rect x="-10" y="-40" width="40" height="60" fill="#f0e8d8"/>
+    <rect x="35" y="-20" width="30" height="40" fill="#e0d0b8"/>
+    <rect x="-5" y="-55" width="28" height="20" fill="#c44"/>
+    <rect x="40" y="-35" width="22" height="18" fill="#a55"/>
+    <rect x="-48" y="-30" width="18" height="14" fill="#a55"/>
+  </g>
+  <text x="601" y="400" text-anchor="middle" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="20" font-weight="bold" fill="#4a3020"><ð Sonnenburg</text>
+
+  <!-- Fischerdorf -->
+  <g transform="translate(421,398)" filter="url(#soft)">
+    <rect x="-45" y="5" width="35" height="30" fill="#c9a878"/>
+    <rect x="5" y="0" width="40" height="38" fill="#d8b890"/>
+    <path d="M-60 40 L60 40 L40 55 L-40 55 Z" fill="#8b7355"/>
+    <line x1="-30" y1="40" x2="-30" y2="20" stroke="#6b5030" stroke-width="3"/>
+    <path d="M-30 20 L-10 5 L10 20" fill="#e8e8f0" opacity="0.9"/>
+  </g>
+  <text x="421" y="455" text-anchor="middle" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="16" font-weight="bold" fill="#2a4a60">õ Fischerdorf</text>
+
+  <!-- Alte Burg -->
+  <g transform="translate(984,359)" filter="url(#soft)">
+    <rect x="-40" y="0" width="25" height="50" fill="#888"/>
+    <rect x="-10" y="-15" width="35" height="65" fill="#999"/>
+    <rect x="25" y="5" width="22" height="45" fill="#777"/>
+    <rect x="-5" y="-35" width="18" height="25" fill="#666"/>
+  </g>
+  <text x="984" y="430" text-anchor="middle" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="17" font-weight="bold" fill="#3a3a4a"><Ú Alte Burg</text>
+
+  <!-- Eisgrotte -->
+  <g transform="translate(691,164)" filter="url(#soft)">
+    <path d="M-40 40 L0 -20 L40 40 Z" fill="#b8e8ff" stroke="#88c8e8" stroke-width="2"/>
+    <ellipse cx="0" cy="42" rx="45" ry="10" fill="#000" opacity="0.2"/>
+  </g>
+  <text x="691" y="215" text-anchor="middle" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="15" font-weight="bold" fill="#2a5a7a">D Eisgrotte</text>
+
+  <!-- Wege (gestrichelt) -->
+  <path d="M601 320 L759 281 L827 242" fill="none" stroke="#e8d8a0" stroke-width="5" stroke-dasharray="12 8" opacity="0.7"/>
+  <path d="M601 320 L534 359 L421 398" fill="none" stroke="#e8d8a0" stroke-width="5" stroke-dasharray="12 8" opacity="0.7"/>
+  <path d="M601 320 L399 281 L309 203" fill="none" stroke="#e8d8a0" stroke-width="5" stroke-dasharray="12 8" opacity="0.7"/>
+
+  <!-- Titel -->
+  <rect x="24" y="18" width="320" height="52" rx="14" fill="#fff" opacity="0.88"/>
+  <text x="44" y="52" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="26" font-weight="bold" fill="#2a6a2a">=ú Abenteuerland</text>
+
+  <!-- Legende -->
+  <rect x="980" y="18" width="276" height="130" rx="12" fill="#fff" opacity="0.9"/>
+  <text x="1000" y="44" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="14" fill="#333">Städte · Brücke · See · Flüsse</text>
+  <text x="1000" y="68" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="14" fill="#333">Friedhof · Baum · Waldhütte</text>
+  <text x="1000" y="92" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="14" fill="#333">Laufe zu den ‘-Orten!</text>
+  <text x="1000" y="128" font-family="Comic Sans MS,Segoe UI,sans-serif" font-size="13" fill="#666">Für kleine Ritter &amp; Ritterinnen</text>
+</svg>

@@ -8,11 +8,18 @@ const screenStart = document.getElementById("screen-start");
 const mapActions = document.getElementById("map-actions");
 const locationHint = document.getElementById("location-hint");
 const btnFight = document.getElementById("btn-fight");
+const btnRestart = document.getElementById("btn-restart");
+const mapPicker = document.getElementById("map-picker");
 
 const HEX = 26;
 const SQRT3 = Math.sqrt(3);
 const mapImg = new Image();
 const heroImg = new Image();
+
+const MAP_ASSETS = {
+  faerun: ["assets/karte.webp", "assets/karte.jpg"],
+  kinder: ["assets/karte-kinder.svg"],
+};
 
 const DIRS = [
   { q: 1, r: 0, keys: ["ArrowRight", "d", "D"] },
@@ -41,12 +48,11 @@ const MapGame = {
     setLoadStatus("Daten werden geladen …", false);
     try {
       await GameData.load();
-      await Promise.all([
-        this.loadImage(mapImg, ["assets/karte.webp", "assets/karte.jpg"]),
-        this.loadImage(heroImg, [
-          "assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.webp",
-          "assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.png",
-        ]),
+      this.syncMapPicker();
+      await this.reloadMapAssets();
+      await this.loadImage(heroImg, [
+        "assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.webp",
+        "assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.png",
       ]);
       this.assetsReady = true;
       this.buildGrid();
@@ -58,6 +64,74 @@ const MapGame = {
       console.error(err);
       setLoadStatus("Fehler beim Laden. Seite neu laden.", false);
     }
+  },
+
+  syncMapPicker() {
+    if (!mapPicker) return;
+    mapPicker.querySelectorAll('input[name="map"]').forEach((input) => {
+      input.checked = input.value === GameData.mapId;
+    });
+  },
+
+  async reloadMapAssets() {
+    const sources = MAP_ASSETS[GameData.mapId] || MAP_ASSETS.faerun;
+    mapImg.src = "";
+    await this.loadImage(mapImg, sources);
+    if (this.assetsReady) {
+      this.buildGrid();
+      this.fitZoomToScreen();
+      this.centerCamera();
+    }
+  },
+
+  async changeMap(mapId) {
+    if (mapId === GameData.mapId) return;
+    const wasRunning = this.running;
+    this.running = false;
+    this.assetsReady = false;
+    setLoadStatus("Karte wird gewechselt …", false);
+    if (btnStart) btnStart.disabled = true;
+    try {
+      await GameData.setMap(mapId);
+      this.syncMapPicker();
+      await this.reloadMapAssets();
+      this.assetsReady = true;
+      this.resetMap();
+      this.syncCampaignHud();
+      if (wasRunning) {
+        screenStart.classList.remove("active");
+        this.running = true;
+        this.updateMapActions();
+      } else {
+        screenStart.classList.add("active");
+      }
+      setLoadStatus("", true);
+      this.render();
+    } catch (err) {
+      console.error(err);
+      setLoadStatus("Kartenwechsel fehlgeschlagen.", false);
+    }
+  },
+
+  restartCampaign() {
+    if (
+      !confirm(
+        "Wirklich neu starten? Alle besiegten Bosse auf dieser Karte werden zurückgesetzt."
+      )
+    ) {
+      return;
+    }
+    GameData.resetCampaign();
+    Battle.playerHp = Battle.playerHpMax;
+    const mapHp = document.getElementById("map-hp");
+    if (mapHp) mapHp.textContent = String(Battle.playerHpMax);
+    this.resetMap();
+    this.syncCampaignHud();
+    this.running = false;
+    screenStart.classList.add("active");
+    mapActions.classList.add("hidden");
+    this.logMessage("Neues Abenteuer – viel Erfolg!");
+    this.render();
   },
 
   loadImage(img, sources) {
@@ -393,6 +467,18 @@ function loop(ts) {
 }
 
 btnStart.addEventListener("click", () => MapGame.startGame());
+
+if (mapPicker) {
+  mapPicker.addEventListener("change", (e) => {
+    const input = e.target.closest('input[name="map"]');
+    if (input) MapGame.changeMap(input.value);
+  });
+}
+
+if (btnRestart) {
+  btnRestart.addEventListener("click", () => MapGame.restartCampaign());
+}
+
 btnFight.addEventListener("click", () => {
   const loc = MapGame.getLocationAt(MapGame.player.q, MapGame.player.r);
   if (loc && loc.unlocked && !GameData.isDefeated(loc.id)) Battle.start(loc);

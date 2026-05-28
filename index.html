@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Ritter auf Faerûn</title>
   <link rel="preload" as="image" href="assets/karte.webp" type="image/webp" />
+  <link rel="preload" as="image" href="assets/karte-kinder.svg" type="image/svg+xml" />
   <link rel="preload" as="image" href="assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.webp" type="image/webp" />
-  <link rel="stylesheet" href="style.css?v=9" />
+  <link rel="stylesheet" href="style.css?v=10" />
 </head>
 <body>
   <main class="game-wrap">
@@ -26,6 +27,9 @@
         <span class="label">Leben</span>
         <strong id="map-hp">24</strong>
       </div>
+      <button type="button" id="btn-restart" class="btn btn-small btn-restart hud-btn" title="Fortschritt zurücksetzen">
+        🔄 Neu starten
+      </button>
     </header>
 
     <div class="stage" id="stage-map">
@@ -39,6 +43,17 @@
       <section id="screen-start" class="overlay active">
         <h1>⚔️ Ritter auf Faerûn ⚔️</h1>
         <p>Reise zu den Orten auf der Karte und besiege die Bosse – wie bei Boss Fighters!</p>
+        <fieldset id="map-picker" class="map-picker">
+          <legend>Welche Karte?</legend>
+          <label class="map-option">
+            <input type="radio" name="map" value="faerun" checked />
+            <span>🗡 Faerûn (klassisch)</span>
+          </label>
+          <label class="map-option">
+            <input type="radio" name="map" value="kinder" />
+            <span>🌈 Abenteuerland (für Kinder)</span>
+          </label>
+        </fieldset>
         <p class="controls-hint">Tippe neben deinen Ritter · <a href="cards/index.html" style="color:#9ab8d8">Karten-PDF</a> · QR scannen</p>
         <p id="load-status" class="load-status">Welt wird geladen …</p>
         <button id="btn-start" class="btn" disabled>Abenteuer starten</button>
@@ -94,9 +109,9 @@
   </main>
 
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-  <script src="js/data.js?v=9"></script>
-  <script src="js/scanner.js?v=9"></script>
-  <script src="js/battle.js?v=9"></script>
-  <script src="js/map.js?v=9"></script>
+  <script src="js/data.js?v=10"></script>
+  <script src="js/scanner.js?v=10"></script>
+  <script src="js/battle.js?v=10"></script>
+  <script src="js/map.js?v=10"></script>
 </body>
 </html>

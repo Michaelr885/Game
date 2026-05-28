@@ -1,0 +1,112 @@
+[
+  {
+    "id": "start",
+    "name": "Sonnenburg",
+    "description": "Eine freundliche Stadt mit bunten Häusern – hier startest du.",
+    "q": 8,
+    "r": 6,
+    "bossId": "dummy",
+    "bossName": "Übungs-Goblin",
+    "difficulty": 1,
+    "unlocked": true
+  },
+  {
+    "id": "waldhuette",
+    "name": "Waldhütte",
+    "description": "Rauch steigt aus dem Schornstein – wer wohnt hier?",
+    "q": 3,
+    "r": 3,
+    "bossId": "nebelgeist",
+    "bossName": "Waldwichtel",
+    "difficulty": 2,
+    "unlocked": false
+  },
+  {
+    "id": "eichenriese",
+    "name": "Eichenriese",
+    "description": "Ein riesiger Baum – in seinen Wurzeln wohnt etwas.",
+    "q": 4,
+    "r": 5,
+    "bossId": "nebelgeist",
+    "bossName": "Wurzelgeist",
+    "difficulty": 2,
+    "unlocked": false
+  },
+  {
+    "id": "friedhof",
+    "name": "Friedhof der Laternen",
+    "description": "Sanftes Licht – aber die Laternen bewegen sich …",
+    "q": 10,
+    "r": 3,
+    "bossId": "schattenritter",
+    "bossName": "Laternengeist",
+    "difficulty": 3,
+    "unlocked": false
+  },
+  {
+    "id": "brueckental",
+    "name": "Brückental",
+    "description": "Unter der alten Steinbrücke gluckert es.",
+    "q": 12,
+    "r": 5,
+    "bossId": "höhlenwyrm",
+    "bossName": "Brücken-Troll",
+    "difficulty": 2,
+    "unlocked": false
+  },
+  {
+    "id": "silbersee",
+    "name": "Silbersee",
+    "description": "Der See glitzert – etwas taucht aus den Wellen auf.",
+    "q": 6,
+    "r": 7,
+    "bossId": "seeschlange",
+    "bossName": "Seepfote",
+    "difficulty": 3,
+    "unlocked": false
+  },
+  {
+    "id": "drachenberg",
+    "name": "Drachenberg",
+    "description": "In den Bergen hört man ein leises Schnarchen …",
+    "q": 14,
+    "r": 4,
+    "bossId": "höhlenwyrm",
+    "bossName": "Schlafdrache",
+    "difficulty": 3,
+    "unlocked": false
+  },
+  {
+    "id": "eisgrotte",
+    "name": "Eisgrotte",
+    "description": "Brrr! Alles ist eisig kalt.",
+    "q": 12,
+    "r": 2,
+    "bossId": "frostriese",
+    "bossName": "Frostkobold",
+    "difficulty": 3,
+    "unlocked": false
+  },
+  {
+    "id": "alte_burg",
+    "name": "Alte Burg",
+    "description": "Verlassene Türme – perfekt für ein Abenteuer.",
+    "q": 16,
+    "r": 7,
+    "bossId": "schattenritter",
+    "bossName": "Burggeist",
+    "difficulty": 4,
+    "unlocked": false
+  },
+  {
+    "id": "fischerdorf",
+    "name": "Fischerdorf",
+    "description": "Boote schaukeln am Ufer – der letzte große Kampf wartet.",
+    "q": 3,
+    "r": 8,
+    "bossId": "seeschlange",
+    "bossName": "Wellenriese",
+    "difficulty": 4,
+    "unlocked": false
+  }
+]

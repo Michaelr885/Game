@@ -1,11 +1,56 @@
 const GameData = {
+  mapId: "faerun",
   locations: [],
   cardsById: {},
   campaign: { defeated: [] },
 
+  mapConfig() {
+    return this.mapId === "kinder"
+      ? {
+          id: "kinder",
+          label: "Abenteuerland",
+          locationsUrl: "data/locations-kinder.json",
+          storageKey: "faerun_campaign_kinder",
+        }
+      : {
+          id: "faerun",
+          label: "Faerûn",
+          locationsUrl: "data/locations.json",
+          storageKey: "faerun_campaign_faerun",
+        };
+  },
+
+  loadMapPreference() {
+    try {
+      const saved = localStorage.getItem("faerun_map");
+      if (saved === "kinder" || saved === "faerun") return saved;
+    } catch {
+      /* ignore */
+    }
+    return "faerun";
+  },
+
+  saveMapPreference() {
+    localStorage.setItem("faerun_map", this.mapId);
+  },
+
+  async setMap(mapId) {
+    if (mapId !== "faerun" && mapId !== "kinder") return;
+    this.mapId = mapId;
+    this.saveMapPreference();
+    const [locations] = await Promise.all([
+      fetch(this.mapConfig().locationsUrl).then((r) => r.json()),
+    ]);
+    this.locations = locations;
+    this.loadCampaign();
+    this.applyUnlocks();
+  },
+
   async load() {
+    this.mapId = this.loadMapPreference();
+    const cfg = this.mapConfig();
     const [locations, cards] = await Promise.all([
-      fetch("data/locations.json").then((r) => r.json()),
+      fetch(cfg.locationsUrl).then((r) => r.json()),
       fetch("data/cards.json").then((r) => r.json()),
     ]);
     this.locations = locations;
@@ -17,17 +62,32 @@ const GameData = {
   },
 
   loadCampaign() {
+    const key = this.mapConfig().storageKey;
     try {
-      const raw = localStorage.getItem("faerun_campaign");
+      let raw = localStorage.getItem(key);
+      if (!raw && this.mapId === "faerun") {
+        raw = localStorage.getItem("faerun_campaign");
+        if (raw) {
+          localStorage.setItem(key, raw);
+          localStorage.removeItem("faerun_campaign");
+        }
+      }
       if (raw) this.campaign = JSON.parse(raw);
+      else this.campaign = { defeated: [] };
     } catch {
       this.campaign = { defeated: [] };
     }
   },
 
   saveCampaign() {
-    localStorage.setItem("faerun_campaign", JSON.stringify(this.campaign));
+    const key = this.mapConfig().storageKey;
+    localStorage.setItem(key, JSON.stringify(this.campaign));
     this.applyUnlocks();
+  },
+
+  resetCampaign() {
+    this.campaign = { defeated: [] };
+    this.saveCampaign();
   },
 
   applyUnlocks() {
