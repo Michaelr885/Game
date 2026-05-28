@@ -28,7 +28,9 @@ Dateien in `assets/` ersetzen:
 | Datei | Inhalt |
 |--------|--------|
 | `karte.webp` / `karte.jpg` | Fantasy-Karte (klein, schnell) |
-| `karte-abenteuerland.png` / `.webp` / `.jpg` | Fantasy-Weltkarte für **Abenteuerland** (`locations-kinder.json`) |
+| `abenteuerland-karte.png` / `.webp` | Fantasy-Weltkarte für **Abenteuerland** (nicht `karte-kinder.svg`!) |
+
+**Wichtig:** Alte Datei `karte-kinder.svg` (grüne Hügel-Zeichnung) lokal löschen und `git pull` ausführen.
 | `aaaaGemini_….webp` / `.png` | Ritter-Figur |
 
 ## Steuerung

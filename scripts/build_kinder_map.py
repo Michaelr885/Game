@@ -7,9 +7,9 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-PNG = ROOT / "assets" / "karte-abenteuerland.png"
-WEBP = ROOT / "assets" / "karte-abenteuerland.webp"
-JPG = ROOT / "assets" / "karte-abenteuerland.jpg"
+PNG = ROOT / "assets" / "abenteuerland-karte.png"
+WEBP = ROOT / "assets" / "abenteuerland-karte.webp"
+JPG = ROOT / "assets" / "abenteuerland-karte.jpg"
 
 
 def main() -> None:

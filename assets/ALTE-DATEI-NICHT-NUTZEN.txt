@@ -1,0 +1,11 @@
+Die Abenteuerland-Karte ist NICHT mehr eine SVG-Datei.
+
+Bitte lokal löschen (falls noch vorhanden):
+  - karte-kinder.svg
+  - karte-kinder.webp / .png / .jpg
+
+Gültige Datei für das Spiel:
+  - abenteuerland-karte.png (Fantasy-Weltkarte)
+  - abenteuerland-karte.webp
+
+Danach: git pull origin main

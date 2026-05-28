@@ -19,6 +19,9 @@ const heroImg = new Image();
 const MAP_ASSETS = {
   faerun: ["assets/karte.webp", "assets/karte.jpg"],
   kinder: [
+    "assets/abenteuerland-karte.webp",
+    "assets/abenteuerland-karte.jpg",
+    "assets/abenteuerland-karte.png",
     "assets/karte-abenteuerland.webp",
     "assets/karte-abenteuerland.jpg",
     "assets/karte-abenteuerland.png",
