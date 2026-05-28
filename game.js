@@ -1,5 +1,6 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
+const stageEl = document.querySelector(".stage");
 
 const scoreEl = document.getElementById("score");
 const livesEl = document.getElementById("lives");
@@ -9,8 +10,8 @@ const screenOver = document.getElementById("screen-over");
 const btnStart = document.getElementById("btn-start");
 const btnRestart = document.getElementById("btn-restart");
 
-const W = canvas.width;
-const H = canvas.height;
+let W = 0;
+let H = 0;
 const HEX = 26;
 const SQRT3 = Math.sqrt(3);
 
@@ -92,6 +93,30 @@ function buildGrid() {
   grid.originY = marginY + HEX;
 }
 
+function fitZoomToScreen() {
+  if (!mapImg.naturalWidth || !W) return;
+  const scaleX = W / mapImg.naturalWidth;
+  const scaleY = H / mapImg.naturalHeight;
+  zoom = Math.max(scaleX, scaleY) * 1.02;
+}
+
+function resizeCanvas() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const rect = stageEl.getBoundingClientRect();
+  const cssW = Math.max(1, Math.floor(rect.width));
+  const cssH = Math.max(1, Math.floor(rect.height));
+  W = Math.floor(cssW * dpr);
+  H = Math.floor(cssH * dpr);
+  canvas.width = W;
+  canvas.height = H;
+  canvas.style.width = `${cssW}px`;
+  canvas.style.height = `${cssH}px`;
+  if (assetsReady >= 2) {
+    fitZoomToScreen();
+    centerCamera();
+  }
+}
+
 function resetGame() {
   player.q = Math.floor(grid.cols / 2);
   player.r = Math.floor(grid.rows / 2);
@@ -100,6 +125,7 @@ function resetGame() {
   lives = 3;
   starTimer = 0;
   moveCooldown = 0;
+  fitZoomToScreen();
   spawnStar();
   updateHud();
   centerCamera();
@@ -323,6 +349,7 @@ function endGame() {
 function onAssetLoad() {
   assetsReady += 1;
   if (assetsReady === 2) {
+    resizeCanvas();
     buildGrid();
     resetGame();
     render();
@@ -359,10 +386,14 @@ canvas.addEventListener(
   (e) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? -0.08 : 0.08;
-    zoom = Math.max(0.55, Math.min(1.35, zoom + delta));
+    const minZoom = W / mapImg.naturalWidth * 0.85;
+    const maxZoom = Math.max(2.5, minZoom * 2.5);
+    zoom = Math.max(minZoom, Math.min(maxZoom, zoom + delta));
     centerCamera();
   },
   { passive: false }
 );
 
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 requestAnimationFrame(loop);

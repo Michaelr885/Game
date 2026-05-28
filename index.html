@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Ritter auf Faerûn</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -10,7 +10,7 @@
   <main class="game-wrap">
     <header class="hud">
       <div class="hud-hero">
-        <img src="assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.png" alt="" class="hud-portrait" width="48" height="48" />
+        <img src="assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.png" alt="" class="hud-portrait" width="44" height="44" />
         <div>
           <span class="label">Abenteurer</span>
           <strong>Ritter</strong>
@@ -27,10 +27,12 @@
     </header>
 
     <div class="stage">
+      <canvas id="game" aria-label="Karte von Faerûn"></canvas>
+
       <section id="screen-start" class="overlay active">
         <h1>⚔️ Ritter auf Faerûn ⚔️</h1>
         <p>Bewege deinen Ritter über die Karte und sammle die leuchtenden Sterne ein!</p>
-        <p class="controls-hint">Pfeiltasten / WASD · Q und E für schräg · Klick · Mausrad zoomen</p>
+        <p class="controls-hint">Pfeiltasten / WASD · Q und E · Klick · Mausrad zoomen</p>
         <button id="btn-start" class="btn">Abenteuer starten</button>
       </section>
 
@@ -39,11 +41,7 @@
         <p>Du hast <strong id="final-score">0</strong> Sterne gesammelt.</p>
         <button id="btn-restart" class="btn">Nochmal spielen</button>
       </section>
-
-      <canvas id="game" width="900" height="560" aria-label="Karte von Faerûn"></canvas>
     </div>
-
-    <p class="hint-bar">Tipp: Ersetze <code>assets/karte.png</code> oder die Ritter-Grafik in <code>assets/</code> mit eigenen Bildern.</p>
   </main>
 
   <script src="game.js"></script>
