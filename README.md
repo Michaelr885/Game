@@ -28,7 +28,8 @@ Dateien in `assets/` ersetzen:
 | Datei | Inhalt |
 |--------|--------|
 | `karte.webp` / `karte.jpg` | Fantasy-Karte (klein, schnell) |
-| `abenteuerland-karte.png` / `.webp` | Fantasy-Weltkarte für **Abenteuerland** |
+| `abenteuerland-karte.png` / `.webp` | Fantasy-Weltkarte für **Abenteuerland** (Spiel, 1280×853) |
+| `abenteuerland-karte-source.jpg` | Original-Upload (4096×3072) |
 
 Download falls lokal veraltet:  
 https://github.com/Michaelr885/Game/raw/main/assets/abenteuerland-karte.png  

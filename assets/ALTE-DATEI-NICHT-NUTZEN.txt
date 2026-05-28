@@ -1,8 +1,8 @@
 Abenteuerland = Fantasy-Weltkarte (Zeppelin, Wüste, Zarmogas-See …)
 
-Diese Datei im Spiel verwenden:
-  abenteuerland-karte.png
+Diese Dateien im Spiel verwenden:
   abenteuerland-karte.webp
+  abenteuerland-karte.jpg
 
 Lokal löschen (alte Zeichnung, funktioniert nicht):
   karte-kinder.svg
@@ -11,5 +11,7 @@ Lokal löschen (alte Zeichnung, funktioniert nicht):
 
 Dann im Projektordner: git pull origin main
 
-Spiel: https://michaelr885.github.io/Game/?v=16
+Original (hochauflösend): abenteuerland-karte-source.jpg
+
+Spiel: https://michaelr885.github.io/Game/?v=17
 → „Abenteuerland“ wählen
