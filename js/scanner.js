@@ -17,14 +17,12 @@ const CardScanner = {
     }
 
     if (!this.html5Qr) {
-      const formats = [
-        Html5QrcodeSupportedFormats.CODE_128,
-        Html5QrcodeSupportedFormats.QR_CODE,
-      ];
-      this.html5Qr = new Html5Qrcode("scanner-view", { formatsToSupport: formats });
+      this.html5Qr = new Html5Qrcode("scanner-view", {
+        formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+      });
     }
 
-    const config = { fps: 8, qrbox: { width: 260, height: 120 }, aspectRatio: 1.5 };
+    const config = { fps: 10, qrbox: { width: 240, height: 240 }, aspectRatio: 1 };
     const cameras = await Html5Qrcode.getCameras().catch(() => []);
     let cameraId = { facingMode: "user" };
     const front = cameras.find(
@@ -41,7 +39,7 @@ const CardScanner = {
       () => {}
     );
     this.running = true;
-    resultEl.textContent = "Barcode in den Rahmen halten …";
+    resultEl.textContent = "QR-Code (Rückseite der Karte) in den Rahmen halten …";
   },
 
   handleScan(text) {

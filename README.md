@@ -1,9 +1,9 @@
 # Ritter auf Faerûn
 
-Browser-Spiel für GitHub Pages: Fantasy-Karte, Reisen zu Orten, Boss-Kämpfe (inspiriert von **Boss Fighters QR**) und druckbare **Barcode-Karten**.
+Browser-Spiel für GitHub Pages: Fantasy-Karte, Reisen zu Orten, Boss-Kämpfe (inspiriert von **Boss Fighters QR**) und **faltbare QR-Karten** zum Ausdrucken.
 
 📄 **Vollständiges Konzept:** [docs/SPIELKONZEPT.md](docs/SPIELKONZEPT.md)  
-🃏 **Karten drucken:** [cards/druckvorlage.html](cards/druckvorlage.html)
+🃏 **Faltkarten drucken:** [cards/druckvorlage.html](cards/druckvorlage.html) (Vorne: Bild · Hinten: QR)
 
 ## Online spielen (GitHub Pages)
 

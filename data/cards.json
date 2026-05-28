@@ -5,6 +5,8 @@
     "type": "attack",
     "subtype": "melee",
     "value": 3,
+    "emoji": "⚔️",
+    "color": "#6a4a3a",
     "text": "Nah-Angriff: 3 Schaden am Boss."
   },
   {
@@ -13,6 +15,8 @@
     "type": "attack",
     "subtype": "ranged",
     "value": 4,
+    "emoji": "🏹",
+    "color": "#3a5a4a",
     "text": "Fern-Angriff: 4 Schaden am Boss."
   },
   {
@@ -21,6 +25,8 @@
     "type": "attack",
     "subtype": "magic",
     "value": 4,
+    "emoji": "✨",
+    "color": "#4a3a6a",
     "text": "Magie-Angriff: 4 Schaden am Boss."
   },
   {
@@ -28,6 +34,8 @@
     "name": "Schild des Lichts",
     "type": "protection",
     "value": 4,
+    "emoji": "🛡️",
+    "color": "#4a5a7a",
     "text": "Schutz: Geplanter Boss-Angriff −4."
   },
   {
@@ -35,6 +43,8 @@
     "name": "Heilung",
     "type": "heal",
     "value": 8,
+    "emoji": "💚",
+    "color": "#2a5a4a",
     "text": "Du heilst 8 LP (max. Start-LP)."
   },
   {
@@ -42,6 +52,8 @@
     "name": "Heiltrank",
     "type": "item",
     "value": 8,
+    "emoji": "🧪",
+    "color": "#3a6a5a",
     "text": "Item: +8 LP, einmal pro Kampf."
   },
   {
@@ -49,13 +61,17 @@
     "name": "Runenschwert",
     "type": "weapon",
     "value": 5,
-    "text": "Waffe: Nächster Nah-Angriff +2 (insgesamt 5+2)."
+    "emoji": "🗡️",
+    "color": "#5a5a6a",
+    "text": "Waffe: Nächster Nah-Angriff +2."
   },
   {
     "id": "FAERUN_LIGHTNING",
     "name": "Blitzrune",
     "type": "lightning",
     "value": 0,
+    "emoji": "⚡",
+    "color": "#6a6a2a",
     "text": "Sofort +1 zusätzliche Aktion."
   },
   {
@@ -63,6 +79,8 @@
     "name": "Weisheit",
     "type": "draw",
     "value": 2,
-    "text": "Ziehe 2 Karten (digital später)."
+    "emoji": "📜",
+    "color": "#4a4a5a",
+    "text": "Ziehe 2 Karten (später im Deck)."
   }
 ]

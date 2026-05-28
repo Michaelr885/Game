@@ -11,7 +11,7 @@ Dieses Dokument fasst deine Pläne zusammen, erklärt das Prinzip von **Boss Fig
 | **Welt** | Detaillierte Fantasy-Karte mit benannten Orten |
 | **Reisen** | Avatar bewegt sich auf der Karte, mindestens **5 Reiseziele** |
 | **Kämpfe** | An jedem Ort Boss-Kämpfe im Stil **Boss Fighters** |
-| **Karten** | Ausgedruckte Karten mit **Barcode**, Scan per **Frontkamera** |
+| **Karten** | **Faltkarten**: vorne Bild, hinten **QR-Code**, Scan per **Frontkamera** |
 | **Kartentypen** | Waffen, Heiltränke, Schilde, Angriffe, Items |
 | **Gerät** | **Tablet** (Touch, große Buttons, Querformat optional) |
 
@@ -212,11 +212,11 @@ index.html
 - [ ] 7 Phasen vereinfacht (Solo, 1 Held)  
 - [ ] 3–5 Karten **digital** testen (ohne Druck)  
 
-### Phase C – Barcode-Scan
+### Phase C – QR-Scan
 
-- [ ] Kamera + Barcode-Erkennung  
-- [ ] `cards.json` + Druckvorlage  
-- [ ] Waffen, Tränke, Schilde testen  
+- [x] Kamera + QR-Erkennung  
+- [x] `cards.json` + Faltkarten-Druckvorlage  
+- [ ] Waffen, Tränke, Schilde mit echten Ausdrucken testen  
 
 ### Phase D – Kampagne
 

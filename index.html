@@ -6,7 +6,7 @@
   <title>Ritter auf Faerûn</title>
   <link rel="preload" as="image" href="assets/karte.webp" type="image/webp" />
   <link rel="preload" as="image" href="assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.webp" type="image/webp" />
-  <link rel="stylesheet" href="style.css?v=7" />
+  <link rel="stylesheet" href="style.css?v=8" />
 </head>
 <body>
   <main class="game-wrap">
@@ -39,7 +39,7 @@
       <section id="screen-start" class="overlay active">
         <h1>⚔️ Ritter auf Faerûn ⚔️</h1>
         <p>Reise zu den Orten auf der Karte und besiege die Bosse – wie bei Boss Fighters!</p>
-        <p class="controls-hint">Tippe neben deinen Ritter · Am Ort: Kampf · Karten per Barcode scannen</p>
+        <p class="controls-hint">Tippe neben deinen Ritter · Am Ort: Kampf · Gefaltete Karte: QR zur Kamera</p>
         <p id="load-status" class="load-status">Welt wird geladen …</p>
         <button id="btn-start" class="btn" disabled>Abenteuer starten</button>
       </section>
@@ -71,7 +71,7 @@
         <div class="action-panel">
           <p class="actions-left">Aktionen: <strong id="actions-left">3</strong></p>
           <div class="quick-cards" id="quick-cards"></div>
-          <button type="button" id="btn-scan" class="btn btn-scan">📷 Karte scannen</button>
+          <button type="button" id="btn-scan" class="btn btn-scan">📷 QR-Karte scannen</button>
           <button type="button" id="btn-end-round" class="btn btn-secondary hidden">Runde beenden</button>
         </div>
       </div>
@@ -80,7 +80,7 @@
     <div id="scanner-modal" class="scanner-modal hidden" aria-hidden="true">
       <div class="scanner-box">
         <h2>Karte scannen</h2>
-        <p>Barcode vor die <strong>Frontkamera</strong> halten (~15 cm)</p>
+        <p>Gefaltete Karte: <strong>Rückseite (QR)</strong> zur Frontkamera (~15 cm)</p>
         <div id="scanner-view"></div>
         <p id="scanner-result" class="scanner-result"></p>
         <button type="button" id="btn-close-scan" class="btn">Schließen</button>
@@ -89,9 +89,9 @@
   </main>
 
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-  <script src="js/data.js?v=7"></script>
-  <script src="js/scanner.js?v=7"></script>
-  <script src="js/battle.js?v=7"></script>
-  <script src="js/map.js?v=7"></script>
+  <script src="js/data.js?v=8"></script>
+  <script src="js/scanner.js?v=8"></script>
+  <script src="js/battle.js?v=8"></script>
+  <script src="js/map.js?v=8"></script>
 </body>
 </html>
