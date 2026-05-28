@@ -1,11 +1,15 @@
-Die Abenteuerland-Karte ist NICHT mehr eine SVG-Datei.
+Abenteuerland = Fantasy-Weltkarte (Zeppelin, Wüste, Zarmogas-See …)
 
-Bitte lokal löschen (falls noch vorhanden):
-  - karte-kinder.svg
-  - karte-kinder.webp / .png / .jpg
+Diese Datei im Spiel verwenden:
+  abenteuerland-karte.png
+  abenteuerland-karte.webp
 
-Gültige Datei für das Spiel:
-  - abenteuerland-karte.png (Fantasy-Weltkarte)
-  - abenteuerland-karte.webp
+Lokal löschen (alte Zeichnung, funktioniert nicht):
+  karte-kinder.svg
+  karte-kinder.webp / .png / .jpg
+  karte-abenteuerland.*
 
-Danach: git pull origin main
+Dann im Projektordner: git pull origin main
+
+Spiel: https://michaelr885.github.io/Game/?v=16
+→ „Abenteuerland“ wählen

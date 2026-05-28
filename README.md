@@ -28,9 +28,12 @@ Dateien in `assets/` ersetzen:
 | Datei | Inhalt |
 |--------|--------|
 | `karte.webp` / `karte.jpg` | Fantasy-Karte (klein, schnell) |
-| `abenteuerland-karte.png` / `.webp` | Fantasy-Weltkarte für **Abenteuerland** (nicht `karte-kinder.svg`!) |
+| `abenteuerland-karte.png` / `.webp` | Fantasy-Weltkarte für **Abenteuerland** |
 
-**Wichtig:** Alte Datei `karte-kinder.svg` (grüne Hügel-Zeichnung) lokal löschen und `git pull` ausführen.
+Download falls lokal veraltet:  
+https://github.com/Michaelr885/Game/raw/main/assets/abenteuerland-karte.png  
+
+Alte Dateien `karte-kinder.svg` (grüne Hügel) lokal löschen, dann `git pull`.
 | `aaaaGemini_….webp` / `.png` | Ritter-Figur |
 
 ## Steuerung

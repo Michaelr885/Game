@@ -22,9 +22,6 @@ const MAP_ASSETS = {
     "assets/abenteuerland-karte.webp",
     "assets/abenteuerland-karte.jpg",
     "assets/abenteuerland-karte.png",
-    "assets/karte-abenteuerland.webp",
-    "assets/karte-abenteuerland.jpg",
-    "assets/karte-abenteuerland.png",
   ],
 };
 
