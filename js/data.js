@@ -34,13 +34,33 @@ const GameData = {
     localStorage.setItem("faerun_map", this.mapId);
   },
 
+  async fetchJson(url) {
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Daten konnten nicht geladen werden (${url}, ${res.status})`);
+    }
+    return res.json();
+  },
+
   async setMap(mapId) {
     if (mapId !== "faerun" && mapId !== "kinder") return;
+    const cfg =
+      mapId === "kinder"
+        ? {
+            id: "kinder",
+            label: "Abenteuerland",
+            locationsUrl: "data/locations-kinder.json",
+            storageKey: "faerun_campaign_kinder",
+          }
+        : {
+            id: "faerun",
+            label: "Faerûn",
+            locationsUrl: "data/locations.json",
+            storageKey: "faerun_campaign_faerun",
+          };
+    const locations = await this.fetchJson(cfg.locationsUrl);
     this.mapId = mapId;
     this.saveMapPreference();
-    const [locations] = await Promise.all([
-      fetch(this.mapConfig().locationsUrl).then((r) => r.json()),
-    ]);
     this.locations = locations;
     this.loadCampaign();
     this.applyUnlocks();
@@ -50,8 +70,8 @@ const GameData = {
     this.mapId = this.loadMapPreference();
     const cfg = this.mapConfig();
     const [locations, cards] = await Promise.all([
-      fetch(cfg.locationsUrl).then((r) => r.json()),
-      fetch("data/cards.json").then((r) => r.json()),
+      this.fetchJson(cfg.locationsUrl),
+      this.fetchJson("data/cards.json"),
     ]);
     this.locations = locations;
     cards.forEach((c) => {

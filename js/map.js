@@ -50,10 +50,11 @@ const MapGame = {
 
   async init() {
     setLoadStatus("Daten werden geladen …", false);
+    if (btnStart) btnStart.disabled = true;
     try {
       await GameData.load();
       this.syncMapPicker();
-      await this.reloadMapAssets();
+      await this.loadMapWithFallback();
       await this.loadImage(heroImg, [
         "assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.webp",
         "assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.png",
@@ -63,10 +64,25 @@ const MapGame = {
       this.resetMap();
       this.syncCampaignHud();
       setLoadStatus("", true);
+      if (btnStart) btnStart.disabled = false;
       this.render();
     } catch (err) {
-      console.error(err);
-      setLoadStatus("Fehler beim Laden. Seite neu laden.", false);
+      console.error("Spielstart:", err);
+      setLoadStatus(err?.message || "Fehler beim Laden. Seite neu laden.", false);
+      if (btnStart) btnStart.disabled = true;
+    }
+  },
+
+  async loadMapWithFallback() {
+    try {
+      await this.reloadMapAssets();
+    } catch (err) {
+      if (GameData.mapId !== "kinder") throw err;
+      console.warn("Abenteuerland nicht geladen, wechsle zu Faerûn:", err);
+      await GameData.setMap("faerun");
+      this.syncMapPicker();
+      await this.reloadMapAssets();
+      this.logMessage("Abenteuerland noch nicht bereit – Faerûn wird angezeigt.");
     }
   },
 
@@ -89,6 +105,7 @@ const MapGame = {
 
   async changeMap(mapId) {
     if (mapId === GameData.mapId) return;
+    const prevMapId = GameData.mapId;
     const wasRunning = this.running;
     this.running = false;
     this.assetsReady = false;
@@ -112,12 +129,24 @@ const MapGame = {
       this.render();
     } catch (err) {
       console.error("Kartenwechsel:", err);
+      try {
+        await GameData.setMap(prevMapId);
+        await this.reloadMapAssets();
+        this.assetsReady = true;
+        this.syncMapPicker();
+        this.resetMap();
+        this.syncCampaignHud();
+        this.render();
+      } catch (rollbackErr) {
+        console.error("Rollback fehlgeschlagen:", rollbackErr);
+        this.assetsReady = false;
+      }
       setLoadStatus(
-        err?.message || "Kartenwechsel fehlgeschlagen. Seite neu laden.",
+        err?.message || "Kartenwechsel fehlgeschlagen. Bitte Seite neu laden.",
         false
       );
     } finally {
-      if (btnStart && this.assetsReady) btnStart.disabled = false;
+      if (btnStart) btnStart.disabled = !this.assetsReady;
     }
   },
 
