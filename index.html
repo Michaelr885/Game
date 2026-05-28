@@ -6,7 +6,7 @@
   <title>Ritter auf Faerûn</title>
   <link rel="preload" as="image" href="assets/karte.webp" type="image/webp" />
   <link rel="preload" as="image" href="assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.webp" type="image/webp" />
-  <link rel="stylesheet" href="style.css?v=8" />
+  <link rel="stylesheet" href="style.css?v=9" />
 </head>
 <body>
   <main class="game-wrap">
@@ -60,19 +60,24 @@
 
       <div class="phase-bar" id="phase-bar"></div>
 
+      <div class="phase-panel" id="phase-panel">
+        <h3 id="phase-title">Phase</h3>
+        <p id="phase-desc" class="phase-desc"></p>
+        <p id="battle-log" class="battle-log"></p>
+        <button type="button" id="btn-phase-continue" class="btn btn-phase-continue hidden">Weiter →</button>
+      </div>
+
       <div class="battle-main">
         <div class="boss-panel">
           <div class="boss-avatar">👹</div>
           <h2 id="battle-boss-name">Boss</h2>
           <p id="battle-boss-attack" class="boss-planned">Geplanter Angriff: —</p>
-          <p id="battle-log" class="battle-log">Kampf beginnt!</p>
         </div>
 
-        <div class="action-panel">
-          <p class="actions-left">Aktionen: <strong id="actions-left">3</strong></p>
+        <div class="action-panel" id="action-panel">
+          <p class="actions-left">Aktionen übrig: <strong id="actions-left">3</strong></p>
           <div class="quick-cards" id="quick-cards"></div>
           <button type="button" id="btn-scan" class="btn btn-scan">📷 QR-Karte scannen</button>
-          <button type="button" id="btn-end-round" class="btn btn-secondary hidden">Runde beenden</button>
         </div>
       </div>
     </section>
@@ -89,9 +94,9 @@
   </main>
 
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-  <script src="js/data.js?v=8"></script>
-  <script src="js/scanner.js?v=8"></script>
-  <script src="js/battle.js?v=8"></script>
-  <script src="js/map.js?v=8"></script>
+  <script src="js/data.js?v=9"></script>
+  <script src="js/scanner.js?v=9"></script>
+  <script src="js/battle.js?v=9"></script>
+  <script src="js/map.js?v=9"></script>
 </body>
 </html>
