@@ -131,6 +131,18 @@ body {
   opacity: 0.85;
 }
 
+.load-status {
+  font-size: 0.9rem;
+  color: #9ab8d8;
+  min-height: 1.25rem;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: wait;
+  transform: none;
+}
+
 .btn {
   border: none;
   padding: 0.75rem 1.6rem;

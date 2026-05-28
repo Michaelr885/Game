@@ -1,6 +1,5 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
-const stageEl = document.querySelector(".stage");
 
 const scoreEl = document.getElementById("score");
 const livesEl = document.getElementById("lives");
@@ -9,16 +8,13 @@ const screenStart = document.getElementById("screen-start");
 const screenOver = document.getElementById("screen-over");
 const btnStart = document.getElementById("btn-start");
 const btnRestart = document.getElementById("btn-restart");
+const loadStatusEl = document.getElementById("load-status");
 
-let W = 0;
-let H = 0;
 const HEX = 26;
 const SQRT3 = Math.sqrt(3);
 
 const mapImg = new Image();
 const heroImg = new Image();
-mapImg.src = "assets/karte.png";
-heroImg.src = "assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.png";
 
 const DIRS = [
   { q: 1, r: 0, keys: ["ArrowRight", "d", "D"] },
@@ -35,6 +31,8 @@ function hexDistance(q1, r1, q2, r2) {
   return Math.max(Math.abs(q1 - q2), Math.abs(r1 - r2), Math.abs(s1 - s2));
 }
 
+let W = 0;
+let H = 0;
 let grid = { cols: 0, rows: 0, originX: 0, originY: 0 };
 let player = { q: 0, r: 0 };
 let stars = [];
@@ -45,8 +43,29 @@ let moveCooldown = 0;
 let starTimer = 0;
 let zoom = 1;
 let cam = { x: 0, y: 0 };
-let assetsReady = 0;
+let assetsReady = false;
 let pendingMove = null;
+
+function loadImage(img, sources) {
+  return new Promise((resolve, reject) => {
+    let index = 0;
+    const tryNext = () => {
+      if (index >= sources.length) {
+        reject(new Error(`Bild nicht gefunden: ${sources.join(", ")}`));
+        return;
+      }
+      img.src = sources[index++];
+    };
+    img.onload = () => resolve(img);
+    img.onerror = tryNext;
+    tryNext();
+  });
+}
+
+function setLoadStatus(text, ready) {
+  if (loadStatusEl) loadStatusEl.textContent = text;
+  if (btnStart) btnStart.disabled = !ready;
+}
 
 function axialToPixel(q, r) {
   const x = HEX * (SQRT3 * q + (SQRT3 / 2) * r) + grid.originX;
@@ -58,7 +77,7 @@ function pixelToAxial(x, y) {
   const px = x - grid.originX;
   const py = y - grid.originY;
   const r = ((2 / 3) * py) / HEX;
-  const q = (px / (SQRT3 * HEX)) - r / 2;
+  const q = px / (SQRT3 * HEX) - r / 2;
   return axialRound(q, r);
 }
 
@@ -87,8 +106,8 @@ function buildGrid() {
   const marginY = 60;
   const usableW = mapImg.naturalWidth - marginX * 2;
   const usableH = mapImg.naturalHeight - marginY * 2;
-  grid.cols = Math.floor(usableW / (SQRT3 * HEX)) - 1;
-  grid.rows = Math.floor(usableH / ((3 / 2) * HEX)) - 1;
+  grid.cols = Math.max(1, Math.floor(usableW / (SQRT3 * HEX)) - 1);
+  grid.rows = Math.max(1, Math.floor(usableH / ((3 / 2) * HEX)) - 1);
   grid.originX = marginX + HEX;
   grid.originY = marginY + HEX;
 }
@@ -111,7 +130,7 @@ function resizeCanvas() {
   canvas.width = W;
   canvas.height = H;
 
-  if (assetsReady >= 2) {
+  if (assetsReady) {
     fitZoomToScreen();
     centerCamera();
   }
@@ -137,7 +156,7 @@ function updateHud() {
 }
 
 function spawnStar() {
-  if (stars.length >= 4) return;
+  if (stars.length >= 4 || grid.cols < 1) return;
   let tries = 0;
   while (tries < 40) {
     const q = Math.floor(Math.random() * grid.cols);
@@ -176,8 +195,8 @@ function centerCamera() {
   const p = axialToPixel(player.q, player.r);
   cam.x = p.x * zoom - W / 2;
   cam.y = p.y * zoom - H / 2;
-  const maxX = mapImg.naturalWidth * zoom - W;
-  const maxY = mapImg.naturalHeight * zoom - H;
+  const maxX = Math.max(0, mapImg.naturalWidth * zoom - W);
+  const maxY = Math.max(0, mapImg.naturalHeight * zoom - H);
   cam.x = Math.max(0, Math.min(maxX, cam.x));
   cam.y = Math.max(0, Math.min(maxY, cam.y));
 }
@@ -271,15 +290,18 @@ function drawHero() {
 }
 
 function render() {
-  ctx.fillStyle = "#0f1824";
+  if (!W || !H) return;
+  ctx.fillStyle = "#4a7a5a";
   ctx.fillRect(0, 0, W, H);
-  if (assetsReady < 2) {
+
+  if (!assetsReady) {
     ctx.fillStyle = "#8aa4c4";
-    ctx.font = "18px sans-serif";
+    ctx.font = `${Math.round(18 * (window.devicePixelRatio || 1))}px sans-serif`;
     ctx.textAlign = "center";
     ctx.fillText("Karte wird geladen …", W / 2, H / 2);
     return;
   }
+
   drawMap();
   if (running) drawGridHints();
   for (const s of stars) drawStar(s);
@@ -287,7 +309,7 @@ function render() {
 }
 
 function update(dt) {
-  if (!running || assetsReady < 2) return;
+  if (!running || !assetsReady) return;
 
   moveCooldown = Math.max(0, moveCooldown - dt);
 
@@ -335,7 +357,7 @@ function screenToMap(clientX, clientY) {
 }
 
 function startGame() {
-  if (assetsReady < 2) return;
+  if (!assetsReady) return;
   resetGame();
   screenStart.classList.remove("active");
   screenOver.classList.remove("active");
@@ -348,22 +370,27 @@ function endGame() {
   screenOver.classList.add("active");
 }
 
-function onAssetLoad() {
-  assetsReady += 1;
-  if (assetsReady === 2) {
+async function loadAssets() {
+  setLoadStatus("Karte und Ritter werden geladen …", false);
+  try {
+    await Promise.all([
+      loadImage(mapImg, ["assets/karte.webp", "assets/karte.jpg"]),
+      loadImage(heroImg, [
+        "assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.webp",
+        "assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.png",
+      ]),
+    ]);
+    assetsReady = true;
     resizeCanvas();
     buildGrid();
     resetGame();
+    setLoadStatus("", true);
     render();
+  } catch (err) {
+    console.error(err);
+    setLoadStatus("Fehler beim Laden. Seite neu laden (Strg+Shift+R).", false);
   }
 }
-
-mapImg.onload = onAssetLoad;
-heroImg.onload = onAssetLoad;
-mapImg.onerror = heroImg.onerror = () => {
-  assetsReady = 2;
-  render();
-};
 
 btnStart.addEventListener("click", startGame);
 btnRestart.addEventListener("click", startGame);
@@ -386,9 +413,10 @@ canvas.addEventListener("click", (e) => {
 canvas.addEventListener(
   "wheel",
   (e) => {
+    if (!assetsReady) return;
     e.preventDefault();
     const delta = e.deltaY > 0 ? -0.08 : 0.08;
-    const minZoom = W / mapImg.naturalWidth * 0.85;
+    const minZoom = (W / mapImg.naturalWidth) * 0.85;
     const maxZoom = Math.max(2.5, minZoom * 2.5);
     zoom = Math.max(minZoom, Math.min(maxZoom, zoom + delta));
     centerCamera();
@@ -398,16 +426,13 @@ canvas.addEventListener(
 
 function initLayout() {
   resizeCanvas();
-  if (assetsReady >= 2) render();
+  if (assetsReady) render();
 }
 
 window.addEventListener("resize", initLayout);
 window.addEventListener("orientationchange", initLayout);
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initLayout);
-} else {
-  initLayout();
-}
+document.addEventListener("DOMContentLoaded", initLayout);
 window.addEventListener("load", initLayout);
 
+loadAssets();
 requestAnimationFrame(loop);

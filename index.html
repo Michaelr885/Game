@@ -4,13 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Ritter auf Faerûn</title>
-  <link rel="stylesheet" href="style.css?v=4" />
+  <link rel="preload" as="image" href="assets/karte.webp" type="image/webp" />
+  <link rel="preload" as="image" href="assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.webp" type="image/webp" />
+  <link rel="stylesheet" href="style.css?v=5" />
 </head>
 <body>
   <main class="game-wrap">
     <header class="hud">
       <div class="hud-hero">
-        <img src="assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.png" alt="" class="hud-portrait" width="44" height="44" />
+        <img src="assets/aaaaGemini_Generated_Image_6ettsz6ettsz6ett.webp" alt="" class="hud-portrait" width="44" height="44" />
         <div>
           <span class="label">Abenteurer</span>
           <strong>Ritter</strong>
@@ -33,7 +35,8 @@
         <h1>⚔️ Ritter auf Faerûn ⚔️</h1>
         <p>Bewege deinen Ritter über die Karte und sammle die leuchtenden Sterne ein!</p>
         <p class="controls-hint">Pfeiltasten / WASD · Q und E · Klick · Mausrad zoomen</p>
-        <button id="btn-start" class="btn">Abenteuer starten</button>
+        <p id="load-status" class="load-status">Karte wird geladen …</p>
+        <button id="btn-start" class="btn" disabled>Abenteuer starten</button>
       </section>
 
       <section id="screen-over" class="overlay">
@@ -44,6 +47,6 @@
     </div>
   </main>
 
-  <script src="game.js?v=4"></script>
+  <script src="game.js?v=5"></script>
 </body>
 </html>

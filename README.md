@@ -24,8 +24,8 @@ Dateien in `assets/` ersetzen:
 
 | Datei | Inhalt |
 |--------|--------|
-| `karte.png` | Fantasy-Karte (Querformat) |
-| `aaaaGemini_Generated_Image_6ettsz6ettsz6ett.png` | Ritter-Figur |
+| `karte.webp` / `karte.jpg` | Fantasy-Karte (klein, schnell) |
+| `aaaaGemini_….webp` / `.png` | Ritter-Figur |
 
 ## Steuerung
 
