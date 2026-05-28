@@ -191,14 +191,23 @@ function tryMove(dq, dr) {
   centerCamera();
 }
 
+function clampCameraAxis(target, mapSize, viewSize) {
+  if (mapSize <= viewSize) {
+    return (mapSize - viewSize) / 2;
+  }
+  return Math.max(0, Math.min(mapSize - viewSize, target));
+}
+
 function centerCamera() {
+  const mapW = mapImg.naturalWidth * zoom;
+  const mapH = mapImg.naturalHeight * zoom;
   const p = axialToPixel(player.q, player.r);
-  cam.x = p.x * zoom - W / 2;
-  cam.y = p.y * zoom - H / 2;
-  const maxX = Math.max(0, mapImg.naturalWidth * zoom - W);
-  const maxY = Math.max(0, mapImg.naturalHeight * zoom - H);
-  cam.x = Math.max(0, Math.min(maxX, cam.x));
-  cam.y = Math.max(0, Math.min(maxY, cam.y));
+
+  let targetX = p.x * zoom - W / 2;
+  let targetY = p.y * zoom - H / 2;
+
+  cam.x = clampCameraAxis(targetX, mapW, W);
+  cam.y = clampCameraAxis(targetY, mapH, H);
 }
 
 function drawHexOutline(q, r, fill, stroke, lineW = 1) {
