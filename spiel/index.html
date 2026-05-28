@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sternen-Fänger</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="sky">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+
+  <main class="game-wrap">
+    <header class="hud">
+      <div class="hud-item">
+        <span class="label">Punkte</span>
+        <strong id="score">0</strong>
+      </div>
+      <div class="hud-item">
+        <span class="label">Leben</span>
+        <strong id="lives">❤️❤️❤️</strong>
+      </div>
+    </header>
+
+    <section id="screen-start" class="overlay active">
+      <h1>⭐ Sternen-Fänger ⭐</h1>
+      <p>Fange die fallenden Sterne mit deinem Korb!</p>
+      <p class="controls-hint">← → oder A / D &nbsp;·&nbsp; auch Touch</p>
+      <button id="btn-start" class="btn">Los geht's!</button>
+    </section>
+
+    <section id="screen-over" class="overlay">
+      <h1>Super gemacht!</h1>
+      <p>Dein Ergebnis: <strong id="final-score">0</strong> Punkte</p>
+      <button id="btn-restart" class="btn">Nochmal spielen</button>
+    </section>
+
+    <canvas id="game" width="480" height="640" aria-label="Spielbereich"></canvas>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>
